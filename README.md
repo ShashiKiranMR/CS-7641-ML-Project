@@ -40,16 +40,7 @@ We have planned individual members’ responsibility as follows. However, we are
 | All | All | Andrew, Ka Lok Ng |Shashi Kiran, Rakesh, Changseok|
 
 ## Timeline
-
-| Task | Owner | W1 | W2 | W3 | W4 | W5 | W6 | W7 | W8 |W9 |
-|-------------------------|---------------------------------|-----------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|-------------------------------|
-| Data Collection & Processing | All | :heavy_check_mark: | :heavy_check_mark:
-| Supervised Learning Implementation | Shashi, Rakesh, Changseok |  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
-| Unsupervised Learning Implementation | Andrew, Lucien |  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
-| Evaluation | All |  | | | | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
-| Video Recording | All |  | | | | | |:heavy_check_mark: | :heavy_check_mark:
-| Writeup | All  | | | | | | | | :heavy_check_mark: | :heavy_check_mark:
-
+<img src="timeline.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
 ## References
 [1] https://github.com/allenai/PeerRead
 
