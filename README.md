@@ -1,4 +1,4 @@
-# CS 7641 ML - Paper Acceptance Prediction
+# Paper Acceptance Prediction
 
 ## Team 10 Group Members
 - Andrew Chafos
