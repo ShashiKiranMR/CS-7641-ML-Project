@@ -1,4 +1,4 @@
-# CS 7641 ML - Paper Acceptance Prediction Project
+# CS 7641 ML - Paper Acceptance Prediction
 ## Team 10 Group Members
 - Andrew Chafos
 - Shashi Kiran Meda Ravi
