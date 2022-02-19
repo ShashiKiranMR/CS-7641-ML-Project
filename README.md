@@ -43,7 +43,10 @@ We have planned individual members’ responsibility as follows. However, we are
 <img src="timeline.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
 
 ## References
-[1] https://github.com/allenai/PeerRead
+[1] Dongyeop Kang, Waleed Ammar, Bhavana Dalvi, Madeleine van Zuylen, Sebastian Kohlmeier, Eduard Hovy, Roy Schwartz.
+_A Dataset of Peer Reviews (PeerRead): Collection, Insights and NLP Applications_
+North American Chapter of the Association for Computational Linguistics 2018.
+[https://arxiv.org/abs/1804.0963](https://arxiv.org/abs/1804.0963)
 
 [2] Deepali J. Joshi, Ajinkya Kulkarni, Riya PandeIshwari Kulkarni Siddharth Patil, Nikhil Saini. _Conference Paper Acceptance Prediction: Using Machine Learning_. Machine Learning and Information Processing 2021. [https://link.springer.com/chapter/10.1007/978-981-33-4859-2_14](https://link.springer.com/chapter/10.1007/978-981-33-4859-2_14)
 
