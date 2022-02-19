@@ -45,10 +45,10 @@ We have planned individual members’ responsibility as follows. However, we are
 ## References
 [1] https://github.com/allenai/PeerRead
 
-[2] Deepali J. Joshi, Ajinkya Kulkarni, Riya PandeIshwari Kulkarni Siddharth Patil, Nikhil Saini. Conference Paper Acceptance Prediction: Using Machine Learning. Machine Learning and Information Processing 2021. https://link.springer.com/chapter/10.1007/978-981-33-4859-2_14 
+[2] Deepali J. Joshi, Ajinkya Kulkarni, Riya PandeIshwari Kulkarni Siddharth Patil, Nikhil Saini. _Conference Paper Acceptance Prediction: Using Machine Learning_. Machine Learning and Information Processing 2021. [https://link.springer.com/chapter/10.1007/978-981-33-4859-2_14](https://link.springer.com/chapter/10.1007/978-981-33-4859-2_14)
 
-[3] Yuxiao Dong, Reid A. Johnson, Nitesh V. Chawla. Can Scientific Impact Be Predicted. IEEE Transactions on Big Data 2016. https://arxiv.org/abs/1606.05905 
+[3] Yuxiao Dong, Reid A. Johnson, Nitesh V. Chawla. _Can Scientific Impact Be Predicted_. IEEE Transactions on Big Data 2016. [https://arxiv.org/abs/1606.05905](https://arxiv.org/abs/1606.05905)
 
-[4] Qingyun Wang, Qi Zeng, Lifu Huang, Kevin Knight, Heng Ji, Nazneen Fatema Rajani. ReviewRobot: Explainable Paper Review Generation based on Knowledge Synthesis. International Conference on Natural Language Generation 2020. https://arxiv.org/abs/2010.06119 
+[4] Qingyun Wang, Qi Zeng, Lifu Huang, Kevin Knight, Heng Ji, Nazneen Fatema Rajani. _ReviewRobot: Explainable Paper Review Generation based on Knowledge Synthesis_. International Conference on Natural Language Generation 2020. [https://arxiv.org/abs/2010.06119](https://arxiv.org/abs/2010.06119)
 
-[5] Jia-Bin Huang. Deep Paper Gestalt. Computer Vision and Pattern Recognition 2018. https://arxiv.org/pdf/1812.08775.pdf 
+[5] Jia-Bin Huang. _Deep Paper Gestalt_. Computer Vision and Pattern Recognition 2018. [https://arxiv.org/pdf/1812.08775.pdf](https://arxiv.org/pdf/1812.08775.pdf)
