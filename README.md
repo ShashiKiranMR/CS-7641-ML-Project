@@ -1,10 +1,12 @@
 # CS 7641 ML - Paper Acceptance Prediction
+
 ## Team 10 Group Members
 - Andrew Chafos
 - Shashi Kiran Meda Ravi
 - Ramesha Rakesh Mugaludi
 - ChangSeok Oh
 - Ka Lok Ng
+
 ## Introduction
 The number of paper submissions in ML conferences is on the rise and outpacing the availability of good reviewers to evaluate them. Having a reliable way to quantify a paper's quality in terms of probability of acceptance could allow one to better allocate the papers among reviewers while also having a better metric for desk rejection of poor-quality papers. Additionally, such a model could also be used to aid authors to instantly evaluate and subsequently improve their paper’s chances of acceptance. Self-evaluation could also discourage authors from submitting poor-quality papers, hence leading to better quality paper submissions overall. Hence, such a model could have double benefits in terms of supporting the scientific community.
 
