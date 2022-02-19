@@ -52,7 +52,11 @@ We have planned individual members’ responsibility as follows. However, we are
 
 ## References
 [1] https://github.com/allenai/PeerRead
+
 [2] https://link.springer.com/chapter/10.1007/978-981-33-4859-2_14
+
 [3] https://arxiv.org/abs/1606.05905
+
 [4] https://aclanthology.org/2020.inlg-1.44.pdf
-[5] arxiv.org/pdf/1812.08775
+
+[5] https://arxiv.org/pdf/1812.08775
