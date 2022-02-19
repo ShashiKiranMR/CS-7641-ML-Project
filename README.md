@@ -41,6 +41,7 @@ We have planned individual members’ responsibility as follows. However, we are
 
 ## Timeline
 <img src="timeline.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+
 ## References
 [1] https://github.com/allenai/PeerRead
 
