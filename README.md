@@ -36,9 +36,7 @@ We shall evaluate the model on the curated test sets to determine the model's ef
 ## Work Division
 We have planned individual members’ responsibility as follows. However, we are planning to make changes to it if needed as we are not exactly sure about the workload of sub-tasks. Additionally, we will be assigning weekly tasks to all the members and will be syncing up weekly to make sure all of us are progressing.
 
-| Presentations & Reports | Data Collection & Preprocessing | Unsupervised Learning | Supervised Learning           |
-|-------------------------|---------------------------------|-----------------------|-------------------------------|
-| All | All | Andrew, Ka Lok Ng |Shashi Kiran, Rakesh, Changseok|
+<img src="work_division.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
 
 ## Timeline
 <img src="timeline.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
