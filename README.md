@@ -8,9 +8,28 @@
 - Ka Lok Ng
 
 ## Introduction
+<!--
 The number of paper submissions in ML conferences is on the rise and outpacing the availability of good reviewers to evaluate them. Having a reliable way to quantify a paper's quality in terms of probability of acceptance could allow one to better allocate the papers among reviewers while also having a better metric for desk rejection of poor-quality papers. Additionally, such a model could also be used to aid authors to instantly evaluate and subsequently improve their paper’s chances of acceptance. Self-evaluation could also discourage authors from submitting poor-quality papers, hence leading to better quality paper submissions overall. Hence, such a model could have double benefits in terms of supporting the scientific community.
 
 Besides the hard-to-measure aspects such as the novelty and the quality of research, many other measurable factors play a vital role in the paper review process. Good presentation is necessary for reviewers to appreciate the papers. The popularity of the paper's research sub-domain may also affect its acceptance.
+-->
+
+The number of paper submissions in ML conferences has outpaced the capacity of reviewers.
+Since there is no reliable metric to quantify the possibility of acceptance of a paper in advance,
+many papers often get rejected due to a hasty submission with low quality
+or interest mismatch to reviewers or a target conference.
+We propose a machine learning project that enables authors to self-evaluate
+the quality of their papers in acceptance probability
+based on prior submissions and their reviews to some top-tier conferences.
+
+Reviewers evaluate diverse aspects of a paper.
+Not to mention its novelty and writing quality,
+they also account for visual representations of the submitted paper.
+Besides, accepted papers usually reflect the contemporary research trend in the domain.
+Unlike prior works,
+we additionally reflect these features in our estimating model that gauges
+the acceptance possibility of the paper.
+
 ## Problem Definition
 We aim to build a predictive model to output a paper’s chance of acceptance. Further, we also aim to discern the prominent factors affecting a paper’s acceptance in each research domain. 
 ## Dataset
