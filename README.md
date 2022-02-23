@@ -20,13 +20,13 @@ many papers often get rejected due to a hasty submission with low quality
 or interest mismatch to reviewers or a target conference.
 We propose a machine learning project that enables authors to self-evaluate
 the quality of their papers in acceptance probability
-based on prior submissions and their reviews to some top-tier conferences.
+based on prior submissions to some top-tier ML conferences and their corresponding reviews.
 
 Reviewers evaluate diverse aspects of a paper.
 Not to mention its novelty and writing quality,
 they also account for visual representations of the submitted paper.
 Besides, accepted papers usually reflect the contemporary research trend in the domain.
-Unlike prior works,
+Unlike similar works,
 we additionally reflect these features in our estimating model that gauges
 the acceptance possibility of the paper.
 
