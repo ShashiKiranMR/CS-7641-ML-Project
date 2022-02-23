@@ -30,10 +30,7 @@ Unlike similar works,
 we additionally reflect these features in our estimating model that gauges
 the acceptance possibility of the paper.
 
-Previously, Joshi et al. [2] and J. 
-Huang et al. [5] developed supervised learning models to predict paper acceptance.  
-Dong et al. [3] attempted predicting a paper's the h-index. 
-Wang et al. [4] built models for generating review comments and scores for papers. 
+Previously, Joshi et al. [2] and J. Huang et al. [5] developed supervised learning models to predict paper acceptance. Dong et al. [3] attempted predicting a paper's the h-index. Wang et al. [4] built models for generating review comments and scores for papers. 
 
 ## Problem Definition
 We aim to build a predictive model to output a paper’s chance of acceptance. Further, we also aim to discern the prominent factors affecting a paper’s acceptance in each research domain. 
