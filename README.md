@@ -4,7 +4,6 @@
 - Andrew Chafos
 - Shashi Kiran Meda Ravi
 - Ramesha Rakesh Mugaludi
-- ChangSeok Oh
 - Ka Lok Ng
 
 ## Introduction
