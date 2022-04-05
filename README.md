@@ -37,26 +37,145 @@ We aim to build a predictive model to output a paper’s chance of acceptance. F
 ### Data Collection 
 We gathered data for acceptance prediction from the PeerRead dataset [1] containing PDFs and parsed JSON files containing the metadata as well as reviews of papers from 6 venues: the ACL 2017 conference, a sample of Machine Learning arXiv papers from 2007-2017 across 3 domains (Machine Learning, Computation and Language, and Artificial Intelligence), the CONLL 2016 conference, and the ICLR 2017 conference. There are 11,090 datapoints across all training data from the conferences as well as 637 datapoints across all testing data from the conferences, with each datapoint corresponding to a paper.
 ### Text-based acceptance prediction
-Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe currently has 7 features (the 7 right-most columns), but we plan to add more. Additionally, we created a dataframe representing the labels for the papers of each conference: a boolean label whose value is True when the paper was accepted and False when it was not. We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these will be the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we will merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets. 
-<img src="text_based_dataframe.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe currently has 7 features (the 7 right-most columns), but we plan to add more. Additionally, we created a dataframe representing the labels for the papers of each conference: a boolean label whose value is True when the paper was accepted and False when it was not. We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these will be the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we will merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets.
 
-<u>**Feature Descriptions**</u>
-<img src="feature_descriptions.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+<img src="text_based_dataframe.png" alt="Timeline Picture"/>
+
+**<u>Feature Descriptions</u>**
+
+<img src="feature_descriptions.png" alt="Timeline Picture"/>
+
+### Image-based acceptance prediction 
+
+Like the data collection for text-based prediction, we used the PeerRead dataset as "meta-data" for the papers' titles and acceptance. Inside PeerRead, we particularly use the papers from ICLR and arXiv.org e-Print achieve since they have fewer technical barriers, e.g., access control and rate-limiting, for crawling. 
+
+We downloaded the raw PDF files of the papers on these venues, where <2% of PDFs are missed, probably revoked by the authors. We have no choice but to remove these papers from our dataset.  
+
+The resulting data is >10GB and beyond our capacity for model training. To subsample the PDFs, we convert them into PNG images via pdf2image and then extract and merge the first 4 pages of each paper into a 224x244 image since we deem the first few pages are the most influential ones to the reviewers' impression. Also, it is hard to uniformly capture all pages because the numbers of pages are different, depending on the format requirement of the venues and the length of the appendix.   
+
+The following is an example of the extracted images. The resolution is low but should be enough as J. Huang[1] 's image-based approach works well with images of the same resolution.
+
+<center><img src="blurry_image.png" alt="Timeline Picture"/></center>
+
+### Sub-domain classification 
+
+We are using unsupervised learning methods to discover the sub-domain of a paper and cluster similar domains together. We will be using techniques like Bag of words, TF-IDF, and BERT encoding to cluster the papers based on the sub-domain. Till now, we have created Bag-of-words and TF-IDF encoding using the words from "Title", and "Abstract" of papers from our PeerRead Dataset.
 
 ## Methods
 Our main idea is to capture the wordings in papers as features, most likely using natural language processing (NLP) techniques to transform the paper contents into (word embedding) vectors. Furthermore, we will combine them with some "meta-data" of the papers, e.g., the citations, the number of figures/equations, etc.
 
+### Unsupervised Learning
 **Unsupervised learning** techniques would help us discover similar sub-domains and recent popular research trends by performing clustering based on inclusion of keywords related to specific sub-domains. Clustering techniques include:
 1. k-means clustering
 2. Gaussian mixture model clustering
 3. Density-based clustering
 
-While we aim to select sub-domains a priori, and perform clustering solely based on the papers’ contents, identifying keywords relevant to sub-domains. We will also reduce the number of relevant features for paper acceptance classification by using the following:
-1. Principal Component Analysis
-2. Independent Component Analysis
+We have implemented Bag-of-words and TF-IDF encoding using words from ‘Title’, and ‘Abstract’ sections of the paper. We are using scikit’s feature_extraction libraries to construct our encodings. 
 
+### Bag-of-words (BOW)
+
+We chose this model because it is the simplest numerical representation of text. For constructing this, we are using scikit’s CountVectorizer to tokenize the sentences from ‘Title’ and ‘Abstract’ into a matrix of token counts. Then we are using scikit’s fit_transform() api to learn the vocabulary dictionary and return the document-term matrix. We are using pandas dataframes to store this matrix.
+
+```py
+# Getting bag of words data structure
+CountVec = CountVectorizer(ngram_range=(1,1), stop_words='english')
+Count_data = CountVec.fit_transform(merged_data)
+cv_dataframe=pd.DataFrame(Count_data.toarray(),columns=CountVec.get_feature_names_out())
+pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_rows', None)
+display(cv_dataframe.head(5).loc[:,cv_dataframe.head(5).any()])
+```
+
+As we can see, there are total 11727 papers, including both training and testing data, and the encoding resulted in 29445 unique words. 
+
+A sample of our BOW table is as follows:
+<center><img src="bow_sample.png" alt="BOW Sample Picture"/></center>
+
+
+### TFIDF
+
+This model is a numeric statistic that is intended to reflect how important a word is to a document. Term frequency is a measure of how frequently a term appears in a document and IDF is a measure of how important a term is. In contrast to BOW, this model derives information on the most and least important words, and hence is expected to perform better. Implementing this is like the BOW approach, except that we will be using a different tokenizer for our data. We are using scikit’s TfidfVectorizer with English stop-words to avoid commonly used English words. 
+
+A sample of our TF_IDF encoding is as follows:
+<center><img src="sample_tfidf.png" alt="Sample TFIDF Picture"/></center>
+
+To cluster papers belonging to similar sub-domains together, we have implemented K-Means algorithm on TF-TDF encoding. 
+
+```py
+# Training the Model
+# Getting tf-idf data structure
+# Vectorize the text
+vectorizer = TfidfVectorizer(stop_words='english')
+X = vectorizer.fit_transform(merged_data)
+X_train = X[0:len(train_data)]
+X_test = X[len(train_data):]
+tf_idf_df=pd.DataFrame(X_train.toarray(),columns=vectorizer.get_feature_names_out())
+display(tf_idf_df.head(5).loc[:,tf_idf_df.head(5).any()])
+```
+
+### K-Means Clustering
+To decide the optimal number of clusters, we have used the elbow method.
+
+```py
+# cluster documents
+distortions = []
+K = range(1,15)
+
+for k in K:
+    model = KMeans(n_clusters=k, init='k-means++', max_iter=1000, n_init=10)
+    model.fit(X_train)
+    distortions.append(model.inertia_)
+
+plt.plot(K, distortions)
+```
+<center><img src="elbow.png" alt="Elbow method"/></center>
+
+From the above curve, we chose 6 as our optimal number of clusters and trained our model using the training dataset from TF-IDF encoding. 
+```py
+# Choosing the best k from elbow method.
+true_k = 6
+model = KMeans(n_clusters=true_k, init='k-means++', max_iter=1000, n_init=10)
+model.fit(X_train)
+```
+These are the top terms in each cluster: 
+<center><img src="cluster_terms.png" alt="Top Cluster Terms"/></center>
+
+Then, we used the test dataset for predicting its sub-domain cluster.
+```py
+# Testing the Model
+# Predict the cluster association of each paper
+prediction = model.predict(X_test)
+print(X_train.shape)
+print(X_test.shape)
+df = pd.DataFrame(list(zip(test_title, prediction)), columns =['Title', 'Cluster ID'])
+pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_rows', None)
+display(df)
+```
+A sample output of our clustering algorithm is as follows:
+<center><img src="sample_clustering.png" alt="Top Cluster Terms"/></center>
+
+### Analysis of the results
+
+From the table above, it is difficult to identify the sub-domain for a cluster. One potential reason we suspect is that we are using all the possible unique words for predicting the sub-domain. As shown before, there are a total of 29,445 unique words from the title and abstract of 11,727 papers, and the resulting encoding is a sparse matrix. There are a few enhancements we plan to make for the final report to fix these issues. We will be reducing the number of features (unique words in this case) using dimensionality reduction algorithms like PCA. Another notable observation is that the top words in each cluster are commonly used words in Machine Learning, so we cannot rely on these words to correctly differentiate the sub-domains. Hence, along with English stop words, which we eliminated from our encodings, we will also try to eliminate commonly used words in Machine Learning for clustering so that the clustering/sub-domain prediction gets better. We will also be implementing the BERT transformer for clustering, and we hope to see better sub-domain prediction compared to BOW and TF-IDF.
+
+### Supervised Learning
 **Supervised learning** techniques help test our hypothesis about the factors and paper acceptance. Hopefully, we may discover some hidden factors that affect paper acceptance.
-We will be using the above labelled dataset to train supervised algorithms to predict the acceptance of a paper. There are a few prior works which propose the following algorithms:
+
+#### Image-based Classification via Neural Network 
+
+We trained a neural network (NN) for acceptance prediction, which inputs the subsampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing.   
+
+In addition to the subsampling, we also normalize the dataset to 0 mean and 1 standard variance. We used the pre-trained ResNet-18 by PyTorch and changed the last fully connected layer to a new one with only 2 output units. We fine-tuned all layers with our training dataset in 50 epochs via SGD with learning rate=0.001, momentum = 0.9, weight decay = 0.01, and we decayed the learning rate by a factor of 0.1 every 10 epochs.   
+
+We twisted our loss function to combat the label-imbalance issue in our data because most papers presented on arXiv are likely to be rejected (by their indented conferences). To prevent the classifier from blindly skewing to one label, namely, rejection, we set weights of each label in our loss function equal to the inverse of their ratio in the training dataset.   
+
+The following chart presents the accuracy trajectory during the training, where the highest test accuracy is 76.4%. Although the model overfits after a few epochs, the model demonstrates non-trivial performance, better than the baseline indicated by the dotted lines on 68%, which is the ratio of the rejected papers to the total paper. It means that, if we skim the paper layout without diving into the content, we can make an educated guess on the paper acceptance.
+<center><img src="accuracy_graph.png" alt="Accuracy Graph"/></center>
+
+
+#### Text-based Classification
+We will be using the labelled dataset to train supervised algorithms to predict the acceptance of a paper. There are a few prior works which propose the following algorithms:
 1.	Naive Bayes
 2.	K-Nearest Neighbor
 3.	Logistic Regression
