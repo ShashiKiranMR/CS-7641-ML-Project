@@ -34,7 +34,8 @@ Previously, Joshi et al. [2] and J. Huang et al. [5] developed supervised learni
 ## Problem Definition
 We aim to build a predictive model to output a paper’s chance of acceptance. Further, we also aim to discern the prominent factors affecting a paper’s acceptance in each research domain. 
 ## Dataset
-We use the PeerRead dataset [1] as ground truth, which consists of 14K papers, 10K actual reviews, and accept/reject decisions in ML top-tier conferences. We may collect additional data if needed.
+### Data Collection 
+We gathered data for acceptance prediction from the PeerRead dataset [1] containing PDFs and parsed JSON files containing the metadata as well as reviews of papers from 6 venues: the ACL 2017 conference, a sample of Machine Learning arXiv papers from 2007-2017 across 3 domains (Machine Learning, Computation and Language, and Artificial Intelligence), the CONLL 2016 conference, and the ICLR 2017 conference. There are 11,090 datapoints across all training data from the conferences as well as 637 datapoints across all testing data from the conferences, with each datapoint corresponding to a paper. 
 ## Methods
 Our main idea is to capture the wordings in papers as features, most likely using natural language processing (NLP) techniques to transform the paper contents into (word embedding) vectors. Furthermore, we will combine them with some "meta-data" of the papers, e.g., the citations, the number of figures/equations, etc.
 
