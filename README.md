@@ -89,7 +89,14 @@ display(cv_dataframe.head(5).loc[:,cv_dataframe.head(5).any()])
 As we can see, there are total 11727 papers, including both training and testing data, and the encoding resulted in 29445 unique words. 
 
 A sample of our BOW table is as follows:
-<center><img src="bow_sample.png" alt="BOW Sample Picture"/></center>
+
+| | 2014 | abstraction | accuracy | achieve | achieves | addition | additionally | alignment | ambiguity | amounts |
+|---:|-------:|--------------:|-----------:|----------:|-----------:|-----------:|---------------:|------------:|------------:|----------:|
+| 0 | 0 | 0 | 0 | 1 | 0 | 1 | 0 | 0 | 2 | 0 |
+| 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 |
+| 2 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 4 | 0 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 0 | 0 |
 
 
 ### TFIDF
@@ -97,7 +104,14 @@ A sample of our BOW table is as follows:
 This model is a numeric statistic that is intended to reflect how important a word is to a document. Term frequency is a measure of how frequently a term appears in a document and IDF is a measure of how important a term is. In contrast to BOW, this model derives information on the most and least important words, and hence is expected to perform better. Implementing this is like the BOW approach, except that we will be using a different tokenizer for our data. We are using scikit’s TfidfVectorizer with English stop-words to avoid commonly used English words. 
 
 A sample of our TF_IDF encoding is as follows:
-<center><img src="sample_tfidf.png" alt="Sample TFIDF Picture"/></center>
+
+| | 2014 | abstraction | accuracy | achieve | achieves | addition | additionally | alignment | ambiguity | amounts |
+|---:|---------:|--------------:|-----------:|----------:|-----------:|-----------:|---------------:|------------:|------------:|----------:|
+| 0 | 0 | 0 | 0 | 0.0518454 | 0 | 0.0569909 | 0 | 0 | 0.169309 | 0 |
+| 1 | 0.107777 | 0 | 0 | 0 | 0 | 0 | 0 | 0.10049 | 0 | 0 |
+| 2 | 0 | 0 | 0.0418489 | 0.047715 | 0 | 0 | 0 | 0 | 0 | 0.0690737 |
+| 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 4 | 0 | 0.0910088 | 0.0526805 | 0.0600649 | 0.0640578 | 0 | 0.0832706 | 0 | 0 | 0 |
 
 To cluster papers belonging to similar sub-domains together, we have implemented K-Means algorithm on TF-TDF encoding. 
 
