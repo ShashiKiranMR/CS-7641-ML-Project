@@ -167,6 +167,7 @@ pd.set_option('display.max_rows', None)
 display(df)
 ```
 A sample output of our clustering algorithm is as follows:
+
 | | Title | Cluster ID |
 |---:|:---------------------------------------------------------------------------------------------------|-------------:|
 | 0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability | 0 |
