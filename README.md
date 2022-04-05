@@ -167,7 +167,18 @@ pd.set_option('display.max_rows', None)
 display(df)
 ```
 A sample output of our clustering algorithm is as follows:
-<center><img src="sample_clustering.png" alt="Top Cluster Terms"/></center>
+| | Title | Cluster ID |
+|---:|:---------------------------------------------------------------------------------------------------|-------------:|
+| 0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability | 0 |
+| 1 | A Neural Local Coherence Model | 1 |
+| 2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis | 2 |
+| 3 | Neural Disambiguation of Causal Lexical Markers based on Context | 0 |
+| 4 | Chunk-based Decoder for Neural Machine Translation | 3 |
+| 5 | What do Neural Machine Translation Models Learn about Morphology? | 3 |
+| 6 | Detecting Lexical Entailment in Context | 2 |
+| 7 | Support Vector Machine Classification with Indefinite Kernels | 5 |
+| 8 | The Parameterized Complexity of Global Constraints | 4 |
+| 9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game | 0 |
 
 ### Analysis of the results
 
