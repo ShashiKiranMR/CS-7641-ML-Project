@@ -4,6 +4,7 @@ import numpy as np
 import json
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.cluster import KMeans
+import re
 
 class Clustering(object):
     def __init__(self):
@@ -24,8 +25,14 @@ class Clustering(object):
                 data.append(" ")
             '''
             t.append(title)
-            data.append(title+" "+abstract)
+            # data.append(title+" "+abstract)
+            data.append(title)
         return t, data
+    
+    def preprocess_text(self, text):
+        text = text.lower()
+        text = re.sub(r'\d+', '', text)
+        return text
 
 '''
 acl_train_path      = '/Users/shashi/code/ML/CS-7641-ML-Project/data/acl_2017/train/reviews/'
