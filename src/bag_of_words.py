@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.cluster import KMeans
 import re
 
-class Clustering(object):
+class ParseData(object):
     def __init__(self):
         pass
 
