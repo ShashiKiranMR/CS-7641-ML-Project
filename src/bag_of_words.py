@@ -5,6 +5,7 @@ import json
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.cluster import KMeans
 import re
+import torch
 
 class Clustering(object):
     def __init__(self):
@@ -33,6 +34,12 @@ class Clustering(object):
         text = text.lower()
         text = re.sub(r'\d+', '', text)
         return text
+    
+    def mean_pooling(self, model_output, attention_mask):
+        token_embeddings = model_output[0] #First element of model_output contains all token embeddings
+        input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+        return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+
 
 '''
 acl_train_path      = '/Users/shashi/code/ML/CS-7641-ML-Project/data/acl_2017/train/reviews/'
