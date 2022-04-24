@@ -4,10 +4,14 @@ import numpy as np
 import json
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.cluster import KMeans
+from sklearn.metrics import pairwise_distances_argmin
+from sklearn.decomposition import TruncatedSVD
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 import re
 import torch
 
-class Clustering(object):
+class ParseData(object):
     def __init__(self):
         pass
 
@@ -39,6 +43,24 @@ class Clustering(object):
         token_embeddings = model_output[0] #First element of model_output contains all token embeddings
         input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
         return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+    
+    def kmeans_plot(self, model, X_train, X_test, Y, n_clusters, colors):
+        svd = TruncatedSVD(n_components=2, n_iter=10, random_state=42)
+        k_means_cluster_centers = model.cluster_centers_
+        # print(k_means_cluster_centers.shape)
+        # print(X.shape)
+        svd = svd.fit(X_train)
+        #X_new = svd.transform(X_test)
+        #centers_new = svd.transform(k_means_cluster_centers)
+        X_new = X_test
+        centers_new = k_means_cluster_centers
+        k_means_labels = Y
+        for k, col in zip(range(n_clusters), colors):
+            my_members = k_means_labels == k
+            cluster_center = centers_new[k]
+            plt.plot(X_new[my_members, 0], X_new[my_members, 1], "w", markerfacecolor=col, marker=".")
+            plt.plot(cluster_center[0],cluster_center[1],"o",markerfacecolor=col,markeredgecolor="k",markersize=6)
+
 
 
 '''
