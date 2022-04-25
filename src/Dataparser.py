@@ -7,6 +7,13 @@ import json, os
 from pathlib import Path
 import matplotlib.pyplot as plt
 import re
+import syllables
+from nltk import word_tokenize, sent_tokenize, download
+download('punkt')
+
+import re
+dale_chall_words = open('dale_chall_words.txt', 'r').read()
+dale_chall_words = set(dale_chall_words.lower().split(','))
 
 def get_all_json(path):
   dev_parsed = {}
@@ -35,6 +42,19 @@ def get_all_json(path):
           train_reviews[id] = json.load(open(path_name, 'r'))
   return dev_parsed, dev_reviews, test_parsed, test_reviews, train_parsed, train_reviews
 
+def complexity_scores(text):
+  words = [w for w in word_tokenize(text) if re.search("^.*(\\d|[A-z]).*$", w)]
+  syllable_counts = np.array([syllables.estimate(w) for w in words])
+  sentences = sent_tokenize(text)
+  difficult_words = [w for w in words if re.sub("[^a-z']", '', w.lower()) not in dale_chall_words]
+  flesch_score = None 
+  dale_chall_score = None
+  if len(words) > 0:
+    flesch_score = 206.835 - 1.015 * (len(words) / len(sentences)) - 84.6 * (np.sum(syllable_counts) / len(words))
+    flesch_score = max(flesch_score, -40)
+    dale_chall_score = 15.79 * (len(difficult_words) / len(words)) + 0.0496 * (len(words) / len(sentences))
+  return flesch_score, dale_chall_score, sentences
+
 ## create Dataframes
 def create_dataframe(json_data, json_reviews, dataset_name=''):
   modified_arr = []
@@ -59,8 +79,26 @@ def create_dataframe(json_data, json_reviews, dataset_name=''):
     # to add a field to the dataframe, simply add an entry to the fields dictionary in this for loop. All data can be found in metadata and review_data, whose respective fields
     # for the acl dataset are listed above. When using a new field, ensure it works across all . If you need to access a field specific to a particular dataset, use the
     # dataset_name parameter, which will be supplied accordingly.
-    fields['abstract'] = review_data['abstract']
-    fields['abstractLength'] = len(review_data['abstract']) 
+    abstract = review_data['abstract']
+    if metadata['abstractText'] and len(metadata['abstractText']) > len(abstract):
+      abstract = metadata['abstractText']
+    fields['abstract'] = abstract
+    fields['abstractLength'] = len(abstract)
+
+    abstract_flesch, abstract_dale_chall, _ = complexity_scores(abstract)
+    fields['abstractFleschScore'], fields['abstractDaleChallScore'] = abstract_flesch, abstract_dale_chall
+
+    allSections = metadata['sections'] if metadata['sections'] else []
+    if len(allSections) != 0:
+      all_sections_text = '. '.join([section['text'] for section in allSections])
+      # sections_flesch, sections_dale_chall, sections_sentences = complexity_scores(all_sections_text)
+      sections_sentences = sent_tokenize(all_sections_text)
+      fields['avgSentenceLength'] = sum([len(sentence) for sentence in sections_sentences])/len(sections_sentences)
+      fields['mentionsAppendix'] = int(type(all_sections_text) == ''.__class__ and 'appendix' in all_sections_text.lower())
+      # fields['allSectionsFleschScore'], fields['allSectionsDaleChallScore'] = sections_flesch, sections_dale_chall
+    else:
+      fields['avgSentenceLength'] = 0
+      fields['mentionsAppendix'] = 0
     
     ### GT and subjective GT section
     ## average reviewer score (weighted by confidence)
