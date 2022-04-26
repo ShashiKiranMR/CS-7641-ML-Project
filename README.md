@@ -190,9 +190,9 @@ From the table above, it is difficult to identify the sub-domain for a cluster. 
 
 #### Image-based Classification via Neural Network 
 
-We trained a neural network (NN) for acceptance prediction, which inputs the subsampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing.   
+We trained a Convolutional neural network (CNN) for acceptance prediction, which inputs the sub-sampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing.   
 
-In addition to the subsampling, we also normalize the dataset to 0 mean and 1 standard variance. We used the pre-trained ResNet-18 by PyTorch and changed the last fully connected layer to a new one with only 2 output units. We fine-tuned all layers with our training dataset in 50 epochs via SGD with learning rate=0.001, momentum = 0.9, weight decay = 0.01, and we decayed the learning rate by a factor of 0.1 every 10 epochs.   
+In addition to the sub-sampling, we also normalize the dataset to 0 mean and 1 standard variance. We used the pre-trained ResNet-18 by PyTorch and changed the last fully connected layer to a new one with only 2 output units. We fine-tuned all layers with our training dataset in 50 epochs via SGD with learning rate=0.001, momentum = 0.9, weight decay = 0.01, and we decayed the learning rate by a factor of 0.1 every 10 epochs.   
 
 We twisted our loss function to combat the label-imbalance issue in our data because most papers presented on arXiv are likely to be rejected (by their indented conferences). To prevent the classifier from blindly skewing to one label, namely, rejection, we set weights of each label in our loss function equal to the inverse of their ratio in the training dataset.   
 
@@ -208,8 +208,44 @@ We will be using the labelled dataset to train supervised algorithms to predict 
 4.	Decision Tree
 5.	Random Forest
 6.	Support Vector Machine
+7.	Neural-network (Multi-Layer Perceptron)
 
 We will implement these algorithms and try to improve accuracy and analyze the relation between sub-domains and the classification algorithm that performs best for each one.
+
+##### 1. Naive Bayes
+
+
+
+##### 2. K-Nearest Neighbor (KNN)
+
+
+
+##### 3. Logistic Regression
+
+
+
+##### 4. Decision Tree
+
+
+
+##### 5. Random Forest
+
+
+
+##### 6. Support Vector Machine (SVM)
+
+
+
+##### 7. Neural-network (Multi-Layer Perceptron)
+
+
+
+#### Supervised approaches Conclusion
+
+
+
+
+
 ## Future Results and Discussion
 
 We shall evaluate the model on the curated test sets to determine the model's effectiveness in predicting paper quality. Apart from tracking the accuracy of our model we also aim to visualize our analysis with appropriate forms of charting such as bar plots, confusion matrices, and cluster plots. These visual tools would aid us in not only conveying our findings but would also allow us to make iterative improvements to our model by exposing interesting trends and features. It remains interesting to see how an ensemble of domain-specific models could improve the predictive capability of our approach.
