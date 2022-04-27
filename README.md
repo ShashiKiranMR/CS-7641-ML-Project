@@ -26,7 +26,6 @@ We gathered data for acceptance prediction from the PeerRead dataset [1] contain
 ### Text-based acceptance prediction
 Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe  has 13 features, with the final column representing whether or not the paper was accepted (a sample of the 13 features columns for a sample of 10 papers are shown below). We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these will be the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we will merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets.
 
-<center>
 
 |    |   titleLen |   numAuthors |   numReferences |  ... | abstractLength |   abstractFleschScore |   abstractDaleChallScore |
 |---:|-----------:|-------------:|----------------:|----:|-----------------:|----------------------:|-------------------------:|
@@ -41,7 +40,6 @@ Once the JSON data was loaded, we constructed a Pandas dataframe for each confer
 |  8 |        103 |            5 |              19 |      |      1675 |             25.3356   |                  8.41612 |
 |  9 |         37 |            3 |              41 |      |       1138 |             18.5446   |                  8.54851 |
 
-</center>
 
 **<u>Feature Descriptions</u>**
 
