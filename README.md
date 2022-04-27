@@ -55,7 +55,7 @@ The following is an example of the extracted images. The resolution is low but s
 
 ### Sub-domain classification 
 
-We are using unsupervised learning methods to discover the sub-domain of a paper and cluster similar domains together. We use techniques like Bag of words, TF-IDF, and BERT encoding to cluster the papers based on the sub-domain. Till now, we have created Bag-of-words and TF-IDF encoding using the words from "Title", and "Abstract" of papers from our PeerRead Dataset.
+We are using unsupervised learning methods to discover the sub-domain of a paper and cluster similar domains together. We use techniques like Bag of words, TF-IDF, and BERT encoding to cluster the papers based on the sub-domain.
 
 ## Methods
 Our main idea is to capture the wordings in papers as features, most likely using natural language processing (NLP) techniques to transform the paper contents into (word embedding) vectors. Furthermore, we combine them with some "meta-data" of the papers, e.g., the citations, the number of figures/equations, etc.
