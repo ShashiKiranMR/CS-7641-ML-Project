@@ -275,61 +275,6 @@ Now, clustering on TF-IDF by reducing the number of features to 500 using SVD, t
 |    8 | The Parameterized Complexity of Global Constraints           |          1 |
 |    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          1 |
 
-### K-Means Clustering
-
-To decide the optimal number of clusters, we have used the elbow method.
-
-```py
-# cluster documents
-distortions = []
-K = range(1,15)
-
-for k in K:
-    model = KMeans(n_clusters=k, init='k-means++', max_iter=1000, n_init=10)
-    model.fit(X_train)
-    distortions.append(model.inertia_)
-
-plt.plot(K, distortions)
-```
-<center><img src="elbow.png" alt="Elbow method"/></center>
-
-From the above curve, we chose 6 as our optimal number of clusters and trained our model using the training dataset from TF-IDF encoding. 
-```py
-# Choosing the best k from elbow method.
-true_k = 6
-model = KMeans(n_clusters=true_k, init='k-means++', max_iter=1000, n_init=10)
-model.fit(X_train)
-```
-These are the top terms in each cluster: 
-<center><img src="cluster_terms.png" alt="Top Cluster Terms"/></center>
-
-Then, we used the test dataset for predicting its sub-domain cluster.
-```py
-# Testing the Model
-# Predict the cluster association of each paper
-prediction = model.predict(X_test)
-print(X_train.shape)
-print(X_test.shape)
-df = pd.DataFrame(list(zip(test_title, prediction)), columns =['Title', 'Cluster ID'])
-pd.set_option('display.max_colwidth', None)
-pd.set_option('display.max_rows', None)
-display(df)
-```
-A sample output of our clustering algorithm is as follows:
-
-| | Title | Cluster ID |
-|---:|:---------------------------------------------------------------------------------------------------|-------------:|
-| 0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability | 0 |
-| 1 | A Neural Local Coherence Model | 1 |
-| 2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis | 2 |
-| 3 | Neural Disambiguation of Causal Lexical Markers based on Context | 0 |
-| 4 | Chunk-based Decoder for Neural Machine Translation | 3 |
-| 5 | What do Neural Machine Translation Models Learn about Morphology? | 3 |
-| 6 | Detecting Lexical Entailment in Context | 2 |
-| 7 | Support Vector Machine Classification with Indefinite Kernels | 5 |
-| 8 | The Parameterized Complexity of Global Constraints | 4 |
-| 9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game | 0 |
-
 ### BERT Encoding
 #### Without SVD
 BERT stands for Bidirectional Encoder Representations from Transformers. BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial task-specific architecture modifications.
