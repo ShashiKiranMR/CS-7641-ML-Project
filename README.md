@@ -26,11 +26,11 @@ We gathered data for acceptance prediction from the PeerRead dataset [1] contain
 ### Text-based acceptance prediction
 Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe currently has 7 features (the 7 right-most columns), but we plan to add more. Additionally, we created a dataframe representing the labels for the papers of each conference: a boolean label whose value is True when the paper was accepted and False when it was not. We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these will be the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we will merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets.
 
-<img src="text_based_dataframe.png" alt="Timeline Picture"/>
+<center><img src="text_based_dataframe.png" alt="Timeline Picture"/></center>
 
 **<u>Feature Descriptions</u>**
 
-<img src="feature_descriptions.png" alt="Timeline Picture"/>
+<center><img src="feature_descriptions.png" alt="Timeline Picture"/></center>
 
 ### Image-based acceptance prediction 
 
@@ -88,14 +88,15 @@ X_test = X_new[len(train_data):]
 As we can see, there are total 11727 papers, including both training and testing data, and the encoding resulted in 29445 unique words. 
 
 A sample of our BOW table is as follows:
+    
+|    |   annotation |   answering |   attention |   base |   based |   bridge |   cross |   detection |   effective |   embedding |
+|---:|-------------:|------------:|------------:|-------:|--------:|---------:|--------:|------------:|------------:|------------:|
+|  0 |            0 |           0 |           0 |      0 |       0 |        1 |       0 |           0 |           0 |           1 |
+|  1 |            0 |           0 |           1 |      0 |       0 |        0 |       0 |           0 |           0 |           0 |
+|  2 |            1 |           0 |           0 |      0 |       0 |        0 |       1 |           0 |           1 |           0 |
+|  3 |            0 |           0 |           0 |      0 |       1 |        0 |       0 |           0 |           0 |           0 |
+|  4 |            0 |           1 |           0 |      1 |       0 |        0 |       0 |           1 |           0 |           0 |
 
-|      | annotation | answering | attention | base | based | bridge | cross | detection | effective | embedding |
-| ---: | ---------: | --------: | --------: | ---: | ----: | -----: | ----: | --------: | --------: | --------: |
-|    0 |          0 |         0 |         0 |    0 |     0 |      1 |     0 |         0 |         0 |         1 |
-|    1 |          0 |         0 |         1 |    0 |     0 |      0 |     0 |         0 |         0 |         0 |
-|    2 |          1 |         0 |         0 |    0 |     0 |      0 |     1 |         0 |         1 |         0 |
-|    3 |          0 |         0 |         0 |    0 |     1 |      0 |     0 |         0 |         0 |         0 |
-|    4 |          0 |         1 |         0 |    1 |     0 |      0 |     0 |         1 |         0 |         0 |
 
 ### Dimensionality Reduction
 
@@ -389,21 +390,66 @@ But there are few observations we made:
 1. BOW and TF-IDF encodings result in very high dimensions compared  to BERT, hence BOW and TF-IDF models result in sparse matrix whereas BERT does not have this issue.
 2. Ideally we expect BERT clustering to be better because BERT is  context-dependent encoding, but due to the lack of ground truth on sub-domains we do not have a definitive way to prove it.
 
+#### K-means Clustering on Visual Embeddings from CNNs
+We also cluster the papers based on their visual appearance, aiming to discover features that might be useful for other ML models. Soon to be introduced below, ResNet is a CNN that captures visual features and transforms them into vectors for a linear classifier, i.e., the final fully connected layer, for prediction. We regard the vectors feeding to the linear classifier as the visual embeddings of the input papers, which has 512 dimensions and use these embeddings to run a K-means clustering.
+Below is the plot of the inertia of the K-mean clustering versus K, the number of clusters. By the elbow method, a good K is 7 as the inertia decreases relatively slowly since then. 
+
+<center><img src="visual_kmean_elbow.png" alt="Accuracy Graph"/></center>
+
+Below are the top 5 papers images in each cluster closest to their centroids. We present the 5 clusters with the least loss (the sum of L2-distance to all data points in this cluster. Each row is for a cluster. The papers in each cluster appear to have a similar format, e.g., on the titles, author lists, and column margins. Thus, the clustering is likely differentiating the format of the papers, which is specified by the conferences. 
+
+
+<center><img src="visual_kmean_top.png" alt="Accuracy Graph"/></center>
+Although differentiating the paper's format may not be useful for acceptance prediction, it may be helpful for other related tasks. One is predicting the intended venue of a paper that appeared on an online pre-print or archive, e.g., arVix, to automate their upload pipeline and provide a better user experience. It may also help a paper search engine classify the paper's venue when not provided.
+
 
 ### Supervised Learning
 **Supervised learning** techniques help test our hypothesis about the factors and paper acceptance. Hopefully, we may discover some hidden factors that affect paper acceptance.
 
-#### Image-based Classification via Neural Network 
+#### Image-based Classification via Convolutional Neural Network (CNN)
 
-We trained a Convolutional neural network (CNN) for acceptance prediction, which inputs the sub-sampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing.   
+We trained a CNN for acceptance prediction, which inputs the sub-sampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing.   
 
 In addition to the sub-sampling, we also normalize the dataset to 0 mean and 1 standard variance. We used the pre-trained ResNet-18 by PyTorch and changed the last fully connected layer to a new one with only 2 output units. We fine-tuned all layers with our training dataset in 50 epochs via SGD with learning rate=0.001, momentum = 0.9, weight decay = 0.01, and we decayed the learning rate by a factor of 0.1 every 10 epochs.   
 
 We twisted our loss function to combat the label-imbalance issue in our data because most papers presented on arXiv are likely to be rejected (by their indented conferences). To prevent the classifier from blindly skewing to one label, namely, rejection, we set weights of each label in our loss function equal to the inverse of their ratio in the training dataset.   
 
 The following chart presents the accuracy trajectory during the training, where the highest test accuracy is 76.4%. Although the model overfits after a few epochs, the model demonstrates non-trivial performance, better than the baseline indicated by the dotted lines on 68%, which is the ratio of the rejected papers to the total paper. It means that, if we skim the paper layout without diving into the content, we can make an educated guess on the paper acceptance.
+
 <center><img src="accuracy_graph.png" alt="Accuracy Graph"/></center>
 
+As the training accuracy is much higher than the test accuracy, our ResNet is overfitting. To mitigate overfitting, we added dropout layers and changed the frozen layers during the fine-tuning process. Yet, the test accuracy is at most different by a few percentage points.
+Still, the accuracy of ResNet-18 is not ideal. We suspect two possible reasons: 1) ResNet is not good enough CNN architecture for the acceptance prediction, or 2) the visual features are not enough for our tasks.
+To figure out the reasons, we also fine-tune a pre-trained VGG-11 with BatchNorm for our tasks. Yet, the resulting accuracy is similar. As shown below, the best attain accuracy is 73.6%, and the overfitting occurs. We are thus convinced that by just looking at the layout of the papers, the CNN classifiers can at best have decent but not impressive accuracy.
+
+<center><img src="vgg_acc.png" alt="Accuracy Graph"/></center>
+
+Below are the normalized confusion matrices of our ResNet and our VGG, respectively. ResNet, on the top, appears to have a high recall (~90%) but a low true negative rate. VGG, on the other hand, has a slightly worse recall but marginally better true negative rate. Our ResNet is better at catching accepted papers, while our VGG is better at catching rejected papers. 
+
+ResNet:
+<center><img src="confusion_resnet.png" alt="Accuracy Graph"/></center>
+
+VGG:
+<center><img src="confusion_vgg.png" alt="Accuracy Graph"/></center>
+
+##### Where do the NNs look at? Activation Heatmap
+
+The CNNs can give us insight into what a good or bad paper looks like. We visualize the activation heatmap of our CNN to see where the NNs look when they predict the acceptance of a paper. In other words, we locate the areas in the input images that impact the most for the final CNN output. 
+To ensure we are not visualizing the heatmap where our CNNs make random guesses, we cherry-picked the test images with the least loss in our CNNs. It means our NNs can confidently give the correct prediction on them. 
+Following are the activation heatmaps of the “bad” papers that our ResNet correctly predicts with the least loss. The brighter the area is, the more influence it has to the prediction. Our ResNet pays the most attention to the figures inside the papers, and these images occupy a large proportion of the first few pages. Thus, a rule of thumb for writing a good paper is perhaps not to put too many large images in the first few pages.
+<center><img src="bad_heatmap_1.png" alt="Accuracy Graph"/></center>
+<center><img src="bad_org_1.png" alt="Accuracy Graph"/></center>
+<center><img src="bad_heatmap_2.png" alt="Accuracy Graph"/></center>
+<center><img src="bad_org_2.png" alt="Accuracy Graph"/></center>
+
+Below are the activation heatmaps of the “good” paper from our ResNet. Interestingly, the NN looks mostly in the margins of the paragraphs. It makes sense because accepted papers are usually well-engineered to comply with the conference format with good utilization of the text space to deliver more content. The lesson learned here for producing a good paper is to format the paper, especially the margin space, properly.
+
+<center><img src="good_heatmap_1.png" alt="Accuracy Graph"/></center>
+<center><img src="good_org_1.png" alt="Accuracy Graph"/></center>
+<center><img src="good_heatmap_2.png" alt="Accuracy Graph"/></center>
+<center><img src="good_org_2.png" alt="Accuracy Graph"/></center>
+
+For VGG, we cannot provide such fine-grained activation heatmaps in the input as the architecture does not support them.
 
 #### Text-based Classification
 We will be using the labelled dataset to train supervised algorithms to predict the acceptance of a paper. There are a few prior works which propose the following algorithms:
@@ -472,10 +518,10 @@ We shall evaluate the model on the curated test sets to determine the model's ef
 ## Work Division
 We have planned individual members’ responsibility as follows. However, we are planning to make changes to it if needed as we are not exactly sure about the workload of sub-tasks. Additionally, we will be assigning weekly tasks to all the members and will be syncing up weekly to make sure all of us are progressing.
 
-<img src="work_division.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+<center><img src="work_division.png" alt="Timeline Picture"/></center>
 
 ## Timeline
-<img src="timeline.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+<center><img src="timeline.png" alt="Timeline Picture" /></center>
 
 ## References
 [1] Dongyeop Kang, Waleed Ammar, Bhavana Dalvi, Madeleine van Zuylen, Sebastian Kohlmeier, Eduard Hovy, Roy Schwartz.
