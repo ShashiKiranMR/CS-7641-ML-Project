@@ -435,7 +435,9 @@ Although differentiating the paper's format may not be useful for acceptance pre
 
 #### Image-based Classification via Convolutional Neural Network (CNN)
 
-We trained a CNN for acceptance prediction, which inputs the sub-sampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing.   
+Inspired by J. Huang's approach [3] on utilizing CNNs for prediction,
+we also trained CNNs on our image dataset for prediction, 
+which inputs the sub-sampled image of a paper’s PDF and outputs a binary prediction of whether the paper is accepted. As a starter, we picked arXiv’s machine learning papers as our dataset, which has 3940 papers for training and 205 for testing. 
 
 In addition to the sub-sampling, we also normalize the dataset to 0 mean and 1 standard variance. We used the pre-trained ResNet-18 by PyTorch and changed the last fully connected layer to a new one with only 2 output units. We fine-tuned all layers with our training dataset in 50 epochs via SGD with learning rate=0.001, momentum = 0.9, weight decay = 0.01, and we decayed the learning rate by a factor of 0.1 every 10 epochs.   
 
@@ -607,6 +609,7 @@ Of all the supervised learning methods ran for text-based acceptance prediction,
 
 ## Future Work
 
+Further fine-tuning our models may give even better prediction performance
 With regard to text-based approaches, we only explored varying the initial learning rate and the initial hidden layer size within 2 specific ranges for the neural network. Hence, it is reasonable to expect there may be better hyperparameters for the neural network, perhaps with more hidden layers, that were outside the scope of our computations. There may be similar optimizations to be made for other used supervised methods. Additionally, there were several features we had to cut for the sake of time, including single-feature representations of BoW and TFIDF for the abstract, that could have yielded additional insights. It would also be worthwhile to explore different supervised learning methods that were not considered in this project.
 
 Additionally, running the supervised models on a combination of text-based and image-based features may yield better results for paper acceptance prediction.
