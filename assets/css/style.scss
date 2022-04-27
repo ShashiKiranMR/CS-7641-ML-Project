@@ -4,7 +4,7 @@
 @import "{{ site.theme }}";
 
 .inner {
-  max-width: 65%;
+  max-width: 60%;
 }
 
 @font-face {
@@ -12,5 +12,5 @@
   src: url('/fonts/Gidole.woff') format('woff'), url('/fonts/Gidole.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-  font-size: 28;
+  font-size: 30px;
 }
