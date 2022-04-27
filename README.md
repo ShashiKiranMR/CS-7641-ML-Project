@@ -24,7 +24,7 @@ We aim to build a predictive model to output a paper’s chance of acceptance. F
 ### Data Collection 
 We gathered data for acceptance prediction from the PeerRead dataset [1] containing PDFs and parsed JSON files containing the metadata as well as reviews of papers from 6 venues: the ACL 2017 conference, a sample of Machine Learning arXiv papers from 2007-2017 across 3 domains (Machine Learning, Computation and Language, and Artificial Intelligence), the CONLL 2016 conference, and the ICLR 2017 conference. There are 11,090 datapoints across all training data from the conferences as well as 637 datapoints across all testing data from the conferences, with each datapoint corresponding to a paper.
 ### Text-based acceptance prediction
-Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe  has 13 features, with the final column representing whether or not the paper was accepted (a sample of the 13 features columns for a sample of 10 papers are shown below). We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these will be the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we will merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets.
+Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe  has 13 features, with the final column representing whether or not the paper was accepted (a sample of the 13 features columns for a sample of 10 papers are shown below). We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these are the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets.
 
 
 |    |   titleLen |   numAuthors |   numReferences |  ... | abstractLength |   abstractFleschScore |   abstractDaleChallScore |
@@ -59,10 +59,10 @@ The following is an example of the extracted images. The resolution is low but s
 
 ### Sub-domain classification 
 
-We are using unsupervised learning methods to discover the sub-domain of a paper and cluster similar domains together. We will be using techniques like Bag of words, TF-IDF, and BERT encoding to cluster the papers based on the sub-domain. Till now, we have created Bag-of-words and TF-IDF encoding using the words from "Title", and "Abstract" of papers from our PeerRead Dataset.
+We are using unsupervised learning methods to discover the sub-domain of a paper and cluster similar domains together. We use techniques like Bag of words, TF-IDF, and BERT encoding to cluster the papers based on the sub-domain. Till now, we have created Bag-of-words and TF-IDF encoding using the words from "Title", and "Abstract" of papers from our PeerRead Dataset.
 
 ## Methods
-Our main idea is to capture the wordings in papers as features, most likely using natural language processing (NLP) techniques to transform the paper contents into (word embedding) vectors. Furthermore, we will combine them with some "meta-data" of the papers, e.g., the citations, the number of figures/equations, etc.
+Our main idea is to capture the wordings in papers as features, most likely using natural language processing (NLP) techniques to transform the paper contents into (word embedding) vectors. Furthermore, we combine them with some "meta-data" of the papers, e.g., the citations, the number of figures/equations, etc.
 
 ### Unsupervised Learning
 **Unsupervised learning** techniques would help us discover similar sub-domains and recent popular research trends by performing clustering based on inclusion of keywords related to specific sub-domains. We use k-means clustering techniques to identify sub-domains by using various feature representations as follows
@@ -115,7 +115,7 @@ A sample of our BOW table is as follows:
 
 Initially we clustered similar papers together by considering both  Title and Abstract sections of the papers for encoding and clustering.  The total number of unique words resulted in 29445 which is the number  of features in this case. As you can already tell, this is a lot of  features and we have to reduce them better and faster clustering.
 
-We have tried out the following ways to overcome this problem and  will be continuing with these approach for all clustering/encoding  methods: 
+We have tried out the following ways to overcome this problem and will be continuing with these approach for all clustering/encoding  methods: 
 
 #### Just use Title of the paper for clustering
 
@@ -192,7 +192,7 @@ Now, clustering on BOW by reducing the number of features to 500 using SVD, the 
 
 ### TF-IDF Encoding
 
-This model is a numeric statistic that is intended to reflect how  important a word is to a document. Term frequency is a measure of how  frequently a term appears in a document and IDF is a measure of how  important a term is. In contrast to BOW, this model derives information  on the most and least important words, and hence is expected to perform  better. Implementing this is like the BOW approach, except that we will  be using a different tokenizer for our data. We are using scikit’s  TfidfVectorizer with English stop-words to avoid commonly used English  words.
+This model is a numeric statistic that is intended to reflect how  important a word is to a document. Term frequency is a measure of how  frequently a term appears in a document and IDF is a measure of how  important a term is. In contrast to BOW, this model derives information  on the most and least important words, and hence is expected to perform  better. Implementing this is like the BOW approach, except that we will be using a different tokenizer for our data. We are using scikit’s  TfidfVectorizer with English stop-words to avoid commonly used English  words.
 
 A sample of our TF_IDF encoding is as follows:
 
@@ -220,7 +220,7 @@ display(tf_idf_df.head(5).loc[:,tf_idf_df.head(5).any()])
 
 ### Clustering on TF-IDF model
 
-Now, we will be using the TF-IDF encoding for clustering similar sub-domain papers together. For this we are using K-means clustering algorithm and we are determining the optimal number of clusters using the popular elbow curve method.
+Now, we use the TF-IDF encoding for clustering similar sub-domain papers together. For this we are using K-means clustering algorithm and we are determining the optimal number of clusters using the popular elbow curve method.
 
 #### Without SVD
 From the below elbow curve, we are choosing K=6 as the optimal number of clusters for our final clustering model.
@@ -499,7 +499,7 @@ Below are the activation heatmaps of the “good” paper from our ResNet. Inter
 For VGG, we cannot provide such fine-grained activation heatmaps in the input as the architecture does not support them.
 
 #### Text-based Classification
-We will be using the labelled dataset to train supervised algorithms to predict the acceptance of a paper. There are a few prior works which propose the following algorithms:
+We are be using the labelled dataset to train supervised algorithms to predict the acceptance of a paper. There are a few prior works which propose the following algorithms:
 1.	Naive Bayes
 2.	K-Nearest Neighbor
 3.	Logistic Regression
@@ -510,7 +510,7 @@ We will be using the labelled dataset to train supervised algorithms to predict 
 
 We have implemented each of these algorithms, fine-tuned their parameters to improve accuracy, and analyzed the relation between sub-domains and the classification algorithm that performs best for each one.
 
-For each of these algorithms, we noticed that using the data available from the PeerRead database directly did not yield useful results because most of the papers were rejected; hence, the models were rewarded with high test accuracy if they simply guessed "reject". We compensated for this by combining all the prior training and testing data, and randomly sampling data corresponding to both rejected and accepted papers such that approximately 55% were rejected and 45% were accepted. The entire dataset from which paper data was sampled for text-based classification consisted of the 3 Arxiv datasets.
+For each of these algorithms, we noticed that using the data available from the PeerRead database directly did not yield useful results because most of the papers were rejected; hence, the models were rewarded with high test accuracy if they simply guessed "reject". We compensated for this by combining all the prior training and testing data, and randomly sampling data corresponding to both rejected and accepted papers such that approximately 55% were rejected and 45% were accepted. The entire dataset from which paper data was sampled for text-based classification consisted of the 3 Arxiv datasets. The features of this sample were the 11 numerical features listed in the data collection section (i.e. everything except the raw abstract and title texts).
 
 ##### 1. Naive Bayes
 
@@ -605,12 +605,16 @@ Additionally, the test accuracy for running the neural network on a variety of i
 
 Of all the supervised learning methods ran for text-based acceptance prediction, Naive Bayes performed the worst, and Random Forest performed the best for 200 estimators and a max. depth of 9. This suggests that, for the numerical features we selected from the papers, naive probabilistic relationships between the features yield little information, whereas splitting the data in a tree-like fashion, pruning, and averaging over many cases yields the optimal way of partitioning paper features for acceptance prediction.
 
-## Future Results and Discussion
+## Future Work
 
-We shall evaluate the model on the curated test sets to determine the model's effectiveness in predicting paper quality. Apart from tracking the accuracy of our model we also aim to visualize our analysis with appropriate forms of charting such as bar plots, confusion matrices, and cluster plots. These visual tools would aid us in not only conveying our findings but would also allow us to make iterative improvements to our model by exposing interesting trends and features. It remains interesting to see how an ensemble of domain-specific models could improve the predictive capability of our approach.
+With regard to text-based approaches, we only explored varying the initial learning rate and the initial hidden layer size within 2 specific ranges for the neural network. Hence, it is reasonable to expect there may be better hyperparameters for the neural network, perhaps with more hidden layers, that were outside the scope of our computations. There may be similar optimizations to be made for other used supervised methods. Additionally, there were several features we had to cut for the sake of time, including single-feature representations of BoW and TFIDF for the abstract, that could have yielded additional insights. It would also be worthwhile to explore different supervised learning methods that were not considered in this project.
+
+Additionally, running the supervised models on a combination of text-based and image-based features may yield better results for paper acceptance prediction.
+
+It remains interesting to see how an ensemble of domain-specific models could improve the predictive capability of our approach.
 
 ## Work Division
-We have planned individual members’ responsibility as follows. However, we are planning to make changes to it if needed as we are not exactly sure about the workload of sub-tasks. Additionally, we will be assigning weekly tasks to all the members and will be syncing up weekly to make sure all of us are progressing.
+We planned individual members’ responsibility as follows. Additionally, we assigned weekly tasks to all the members and synced up weekly to ensure all of us were progressing.
 
 <center><img src="work_division.png" alt="Timeline Picture"/></center>
 
