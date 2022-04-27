@@ -149,14 +149,14 @@ Inertia in this case is 44204.41325844073.
 #### Without SVD
 To understand what each cluster signifies in terms of sub-domain, we are obtaining top terms per cluster. To analyze in a better way, word clouds for these are generated.
 
-<p float="left">
+<p float="center">
 <img src="./wordcloud_bow_cluster0.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_bow_cluster1.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_bow_cluster2.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_bow_cluster3.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_bow_cluster4.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_bow_cluster5.png" alt="wordcloud" width="200"/>
-<p float="left">
+</p>
 
 
 Once the model is trained, we are clustering the papers in our testing set and the sample prediction is as shown below.
@@ -238,14 +238,15 @@ Inertia in this case is 5179.698138369373.
 #### Without SVD
 To understand what each cluster signifies in terms of sub-domain, we are obtaining top terms per cluster. To analyze in a better way, word clouds for these are generated.
 
-<p float="left">
+<p float="center">
 <img src="./wordcloud_tfidf_cluster0.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_tfidf_cluster1.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_tfidf_cluster2.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_tfidf_cluster3.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_tfidf_cluster4.png" alt="wordcloud" width="200"/>
 <img src="./wordcloud_tfidf_cluster5.png" alt="wordcloud" width="200"/>
-<p float="left">
+</p>
+
 
 Once the model is trained, we are clustering the papers in our testing set and the sample prediction is as shown below.
 
@@ -474,7 +475,7 @@ To ensure we are not visualizing the heatmap where our CNNs make random guesses,
 
 Following are the activation heatmaps of the “bad” papers that our ResNet correctly predicts with the least loss. The brighter the area is, the more influence it has to the prediction. Our ResNet pays the most attention to the figures inside the papers, and these images occupy a large proportion of the first few pages. Thus, a rule of thumb for writing a good paper is perhaps not to put too many large images in the first few pages.
 
-<p float="left">
+<p float="center">
 <img src="bad_heatmap_1.png" alt="Accuracy Graph" width="200"/>
 <img src="bad_org_1.png" alt="Accuracy Graph" width="200"/>
 <img src="bad_heatmap_2.png" alt="Accuracy Graph" width="200"/>
@@ -483,7 +484,7 @@ Following are the activation heatmaps of the “bad” papers that our ResNet co
 
 Below are the activation heatmaps of the “good” paper from our ResNet. Interestingly, the NN looks mostly in the margins of the paragraphs. It makes sense because accepted papers are usually well-engineered to comply with the conference format with good utilization of the text space to deliver more content. The lesson learned here for producing a good paper is to format the paper, especially the margin space, properly.
 
-<p float="left">
+<p float="center">
 <img src="good_heatmap_1.png" alt="Accuracy Graph" width="200"/>
 <img src="good_org_1.png" alt="Accuracy Graph" width="200"/>
 <img src="good_heatmap_2.png" alt="Accuracy Graph" width="200"/>
