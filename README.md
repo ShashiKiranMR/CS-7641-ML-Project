@@ -148,12 +148,16 @@ Inertia in this case is 44204.41325844073.
 ### Clustering Analysis
 #### Without SVD
 To understand what each cluster signifies in terms of sub-domain, we are obtaining top terms per cluster. To analyze in a better way, word clouds for these are generated.
-<center><img src="./wordcloud_bow_cluster0.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_bow_cluster1.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_bow_cluster2.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_bow_cluster3.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_bow_cluster4.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_bow_cluster5.png" alt="wordcloud"/></center>
+
+<p float="left">
+<img src="./wordcloud_bow_cluster0.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_bow_cluster1.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_bow_cluster2.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_bow_cluster3.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_bow_cluster4.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_bow_cluster5.png" alt="wordcloud" width="200"/>
+<p float="left">
+
 
 Once the model is trained, we are clustering the papers in our testing set and the sample prediction is as shown below.
 
@@ -233,12 +237,15 @@ Inertia in this case is 5179.698138369373.
 ### Clustering Analysis
 #### Without SVD
 To understand what each cluster signifies in terms of sub-domain, we are obtaining top terms per cluster. To analyze in a better way, word clouds for these are generated.
-<center><img src="./wordcloud_tfidf_cluster0.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_tfidf_cluster1.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_tfidf_cluster2.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_tfidf_cluster3.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_tfidf_cluster4.png" alt="wordcloud"/></center>
-<center><img src="./wordcloud_tfidf_cluster5.png" alt="wordcloud"/></center>
+
+<p float="left">
+<img src="./wordcloud_tfidf_cluster0.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_tfidf_cluster1.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_tfidf_cluster2.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_tfidf_cluster3.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_tfidf_cluster4.png" alt="wordcloud" width="200"/>
+<img src="./wordcloud_tfidf_cluster5.png" alt="wordcloud" width="200"/>
+<p float="left">
 
 Once the model is trained, we are clustering the papers in our testing set and the sample prediction is as shown below.
 
@@ -444,13 +451,20 @@ To figure out the reasons, we also fine-tune a pre-trained VGG-11 with BatchNorm
 
 ##### Conclusion on the Performance of CNNs
 
-Below are the normalized confusion matrices of our ResNet and our VGG, respectively. ResNet, on the top, appears to have a high recall (~90%) but a low true negative rate. VGG, on the other hand, has a slightly worse recall but marginally better true negative rate. Our ResNet is better at catching accepted papers, while our VGG is better at catching rejected papers. 
+Below are the normalized confusion matrices of our ResNet and our VGG, respectively. ResNet, on the left, appears to have a high recall (~90%) but a low true negative rate. VGG, on the right, has a slightly worse recall but marginally better true negative rate. Our ResNet is better at catching accepted papers, while our VGG is better at catching rejected papers. 
 
-ResNet:
-<center><img src="confusion_resnet.png" alt="Accuracy Graph"/></center>
-
-VGG:
-<center><img src="confusion_vgg.png" alt="Accuracy Graph"/></center>
+<p float="center">
+<!-- <figure> -->
+<img src="confusion_resnet.png" alt="Accuracy Graph" width="400"/>
+<!-- <figcaption>ResNet Confusion Matrix</figcaption> -->
+<!-- </figure> -->
+<!-- <figure> -->
+<img src="confusion_vgg.png" alt="Accuracy Graph" width="400"/>
+<!-- <figcaption>VGG Confusion Matrix</figcaption> -->
+<!-- </figure> -->
+<!-- <center><img src="confusion_vgg.png" alt="Accuracy Graph"/></center> -->
+</p>
+Left: ResNet; Right: VGG
 
 ##### Activation Heatmap: Where the NNs Look at and What We can Learn from it.
 
@@ -460,17 +474,21 @@ To ensure we are not visualizing the heatmap where our CNNs make random guesses,
 
 Following are the activation heatmaps of the “bad” papers that our ResNet correctly predicts with the least loss. The brighter the area is, the more influence it has to the prediction. Our ResNet pays the most attention to the figures inside the papers, and these images occupy a large proportion of the first few pages. Thus, a rule of thumb for writing a good paper is perhaps not to put too many large images in the first few pages.
 
-<center><img src="bad_heatmap_1.png" alt="Accuracy Graph"/></center>
-<center><img src="bad_org_1.png" alt="Accuracy Graph"/></center>
-<center><img src="bad_heatmap_2.png" alt="Accuracy Graph"/></center>
-<center><img src="bad_org_2.png" alt="Accuracy Graph"/></center>
+<p float="left">
+<img src="bad_heatmap_1.png" alt="Accuracy Graph" width="200"/>
+<img src="bad_org_1.png" alt="Accuracy Graph" width="200"/>
+<img src="bad_heatmap_2.png" alt="Accuracy Graph" width="200"/>
+<img src="bad_org_2.png" alt="Accuracy Graph" width="200"/>
+</p>
 
 Below are the activation heatmaps of the “good” paper from our ResNet. Interestingly, the NN looks mostly in the margins of the paragraphs. It makes sense because accepted papers are usually well-engineered to comply with the conference format with good utilization of the text space to deliver more content. The lesson learned here for producing a good paper is to format the paper, especially the margin space, properly.
 
-<center><img src="good_heatmap_1.png" alt="Accuracy Graph"/></center>
-<center><img src="good_org_1.png" alt="Accuracy Graph"/></center>
-<center><img src="good_heatmap_2.png" alt="Accuracy Graph"/></center>
-<center><img src="good_org_2.png" alt="Accuracy Graph"/></center>
+<p float="left">
+<img src="good_heatmap_1.png" alt="Accuracy Graph" width="200"/>
+<img src="good_org_1.png" alt="Accuracy Graph" width="200"/>
+<img src="good_heatmap_2.png" alt="Accuracy Graph" width="200"/>
+<img src="good_org_2.png" alt="Accuracy Graph" width="200"/>
+</p>
 
 For VGG, we cannot provide such fine-grained activation heatmaps in the input as the architecture does not support them.
 
@@ -605,3 +623,4 @@ North American Chapter of the Association for Computational Linguistics 2018.
 [4] Qingyun Wang, Qi Zeng, Lifu Huang, Kevin Knight, Heng Ji, Nazneen Fatema Rajani. _ReviewRobot: Explainable Paper Review Generation based on Knowledge Synthesis_. International Conference on Natural Language Generation 2020. [https://arxiv.org/abs/2010.06119](https://arxiv.org/abs/2010.06119)
 
 [5] Jia-Bin Huang. _Deep Paper Gestalt_. Computer Vision and Pattern Recognition 2018. [https://arxiv.org/pdf/1812.08775.pdf](https://arxiv.org/pdf/1812.08775.pdf)
+
