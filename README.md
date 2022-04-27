@@ -424,7 +424,10 @@ Below are the top 5 papers images in each cluster closest to their centroids. We
 <center><img src="visual_kmean_top.png" alt="Accuracy Graph"/></center>
 
 
+##### Discussion: Is this Image-based Clustering Useful?
+
 Although differentiating the paper's format may not be useful for acceptance prediction, it may be helpful for other related tasks. One is predicting the intended venue of a paper that appeared on an online pre-print or archive, e.g., arVix, to automate their upload pipeline and provide a better user experience. It may also help a paper search engine classify the paper's venue when not provided.
+
 
 
 ### Supervised Learning
@@ -467,11 +470,13 @@ Below are the normalized confusion matrices of our ResNet and our VGG, respectiv
 </p>
 Left: ResNet; Right: VGG
 
-##### Activation Heatmap: Where the NNs Look at and What We can Learn from it.
+##### Activation Heatmap: Where the NNs Look at and What We can Learn from it
 
 The CNNs can give us insight into what a good or bad paper looks like. We visualize the activation heatmap of our CNN to see where the NNs look when they predict the acceptance of a paper. In other words, we locate the areas in the input images that most impact the final CNN output.
 
 To ensure we are not visualizing the heatmap where our CNNs make random guesses, we cherry-picked the test images with the least loss in our CNNs. It means our NNs can confidently give the correct prediction on them. 
+
+##### Results and Discussion on the Activation Heatmaps
 
 Following are the activation heatmaps of the “bad” papers that our ResNet correctly predicts with the least loss. The brighter the area is, the more influence it has to the prediction. Our ResNet pays the most attention to the figures inside the papers, and these images occupy a large proportion of the first few pages. Thus, a rule of thumb for writing a good paper is perhaps not to put too many large images in the first few pages.
 
