@@ -40,7 +40,7 @@ We downloaded the raw PDF files of the papers on these venues, where <2% of PDFs
 
 The resulting data is >10GB and beyond our capacity for model training. To subsample the PDFs, we convert them into PNG images via pdf2image and then extract and merge the first 4 pages of each paper into a 224x244 image since we deem the first few pages are the most influential ones to the reviewers' impression. Also, it is hard to uniformly capture all pages because the numbers of pages are different, depending on the format requirement of the venues and the length of the appendix.   
 
-The following is an example of the extracted images. The resolution is low but should be enough as J. Huang[1] 's image-based approach works well with images of the same resolution.
+The following is an example of the extracted images. The resolution is low but should be enough as J. Huang [5] 's image-based approach works well with images of the same resolution.
 
 <center><img src="blurry_image.png" alt="Timeline Picture"/></center>
 
@@ -396,10 +396,14 @@ Below is the plot of the inertia of the K-mean clustering versus K, the number o
 
 <center><img src="visual_kmean_elbow.png" alt="Accuracy Graph"/></center>
 
+
 Below are the top 5 papers images in each cluster closest to their centroids. We present the 5 clusters with the least loss (the sum of L2-distance to all data points in this cluster. Each row is for a cluster. The papers in each cluster appear to have a similar format, e.g., on the titles, author lists, and column margins. Thus, the clustering is likely differentiating the format of the papers, which is specified by the conferences. 
 
 
 <center><img src="visual_kmean_top.png" alt="Accuracy Graph"/></center>
+
+##### Conclusion on Image-based Clustering
+
 Although differentiating the paper's format may not be useful for acceptance prediction, it may be helpful for other related tasks. One is predicting the intended venue of a paper that appeared on an online pre-print or archive, e.g., arVix, to automate their upload pipeline and provide a better user experience. It may also help a paper search engine classify the paper's venue when not provided.
 
 
@@ -426,6 +430,8 @@ To figure out the reasons, we also fine-tune a pre-trained VGG-11 with BatchNorm
 
 <center><img src="vgg_acc.png" alt="Accuracy Graph"/></center>
 
+##### Conclusion on the Performance of CNNs
+
 Below are the normalized confusion matrices of our ResNet and our VGG, respectively. ResNet, on the top, appears to have a high recall (~90%) but a low true negative rate. VGG, on the other hand, has a slightly worse recall but marginally better true negative rate. Our ResNet is better at catching accepted papers, while our VGG is better at catching rejected papers. 
 
 ResNet:
@@ -434,7 +440,7 @@ ResNet:
 VGG:
 <center><img src="confusion_vgg.png" alt="Accuracy Graph"/></center>
 
-##### Where do the NNs look at? Activation Heatmap
+##### Activation Heatmap: Where the NNs Look at and What We can Learn from it.
 
 The CNNs can give us insight into what a good or bad paper looks like. We visualize the activation heatmap of our CNN to see where the NNs look when they predict the acceptance of a paper. In other words, we locate the areas in the input images that most impact the final CNN output.
 
