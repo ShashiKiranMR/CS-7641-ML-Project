@@ -214,25 +214,37 @@ We will implement these algorithms and try to improve accuracy and analyze the r
 
 ##### 1. Naive Bayes
 
+Naive Bayes is a simple method for constructing classifiers i.e. assign class labels to problem instances, represented as feature vectors such as BOW, TF-IDF, BERT etc. Naive Bayes classifiers rely on the assumption that a particular feature is independent of all other features. Despite this naive design and simple approach, naive Bayes approach works quite well in most cases. An advantage of naive Bayes is that it requires only a small number of training data to estimate the parameters for classification, which is a especially useful in data-constrained settings. The probabilistic nature of the method makes it suitable for our use case.
+
 
 
 ##### 2. K-Nearest Neighbor (KNN)
+
+The K-Nearest Neighbor (KNN) algorithm is a type of supervised learning algorithm used for both regression and classification tasks. KNN tries to predict the  correct class for the test data by calculating the distance between the  test data and all the training points in feature space. It essentially relies on the assumption that similar things exist in close proximity to each other. Hence feature selection becomes crucial for good performance. 
 
 
 
 ##### 3. Logistic Regression
 
+Binary Logistic regression is a supervised classification method used to predict the probability of a target variable. The nature of output is dichotomous, i.e. there would be two possible classes. In other words, the output is binarized i.e outputting either 1 or 0 only. Mathematically, a logistic regression model predicts P(Y=1) as a  function of X. It is one of the simplest ML algorithms that can be used  for various classification problems.
+
 
 
 ##### 4. Decision Tree
+
+Decision Trees can be thought of as non-parametric supervised classification method. It aims to create a model that predicts an output by learning simple decision rules constructed from the data features. It is called a tree as these decision rules can be structurally be represented as a tree.
 
 
 
 ##### 5. Random Forest
 
+The Random forest is a classification algorithm consisting of many randomly constructed decisions trees. It uses bagging and feature randomness when building each individual tree to create an uncorrelated forest (ensemble) of trees whose prediction by committee is more accurate than that of any individual tree. It is effective in many scenarios and can be used for various classification problems.
+
 
 
 ##### 6. Support Vector Machine (SVM)
+
+Support Vector Machine (SVM) are a class of supervised classification algorithms. In the SVM algorithm, we plot each data item as a point in n-dimensional feature space with the value of each feature being the value of a particular coordinate. The learning component aims to perform classification by finding the hyper-plane that differentiates the two classes in the best possible way.
 
 
 
