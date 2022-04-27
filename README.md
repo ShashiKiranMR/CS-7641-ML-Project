@@ -360,11 +360,21 @@ The following is the sample clustering of 10 papers from our testing dataset:
 
 ### Analysis of the results
 
-From the table above, it is difficult to identify the sub-domain for a cluster. One potential reason we suspect is that we are using all the possible unique words for predicting the sub-domain. As shown before, there are a total of 29,445 unique words from the title and abstract of 11,727 papers, and the resulting encoding is a sparse matrix. There are a few enhancements we plan to make for the final report to fix these issues. We will be reducing the number of features (unique words in this case) using dimensionality reduction algorithms like PCA. Another notable observation is that the top words in each cluster are commonly used words in Machine Learning, so we cannot rely on these words to correctly differentiate the sub-domains. Hence, along with English stop words, which we eliminated from our encodings, we will also try to eliminate commonly used words in Machine Learning for clustering so that the clustering/sub-domain prediction gets better. We will also be implementing the BERT transformer for clustering, and we hope to see better sub-domain prediction compared to BOW and TF-IDF.
+We have experimented K-means clustering to group similar papers  together using 3 different encodings, namely BOW, TF-IDF, and BERT. We  have also tried to reduce the dimensions using SVD. 
 
-#### Clustering Comparison:
+The purpose of clustering similar papers together was to analyze which sub-domains have a better acceptance rate. To show this, we use the ground truth of paper acceptance and the clustering assignments. Below is one such observation we made with BOW encodings before SVD:
 
-We have experimented K-means clustering to group similar papers  together using 3 different encodings, namely BOW, TF-IDF, and BERT. We  have also tried to reduce the dimensions using SVD. Conceptually the  encodings these models do for transforming strings to numbers is  completely different and hence we cannot definitely compare these as we  do not have the ground truth in this case.
+| Cluster # | Acceptance Rate |
+|-----------|-----------------|
+| 0         | 22 %            |
+| 1         | 10 %            |
+| 2         | 28 %            |
+| 3         | 50 %            |
+| 4         | 33 %            |
+| 5         | 27 %            |
+
+
+Conceptually the  encodings these models do for transforming strings to numbers is  completely different and hence we cannot definitely compare these as we  do not have the ground truth in this case.
 
 Numerically, inertia can be used to compare the distances but we  cannot really say which clustering is better just based on the following numbers.
 
@@ -378,6 +388,7 @@ But there are few observations we made:
 
 1. BOW and TF-IDF encodings result in very high dimensions compared  to BERT, hence BOW and TF-IDF models result in sparse matrix whereas BERT does not have this issue.
 2. Ideally we expect BERT clustering to be better because BERT is  context-dependent encoding, but due to the lack of ground truth on sub-domains we do not have a definitive way to prove it.
+
 
 ### Supervised Learning
 **Supervised learning** techniques help test our hypothesis about the factors and paper acceptance. Hopefully, we may discover some hidden factors that affect paper acceptance.
