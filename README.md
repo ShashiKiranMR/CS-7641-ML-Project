@@ -89,7 +89,7 @@ As we can see, there are total 11727 papers, including both training and testing
 
 A sample of our BOW table is as follows:
 
-<center>
+<div align="center">
     
 |    |   annotation |   answering |   attention |   base |   based |   bridge |   cross |   detection |   effective |   embedding |
 |---:|-------------:|------------:|------------:|-------:|--------:|---------:|--------:|------------:|------------:|------------:|
@@ -99,7 +99,7 @@ A sample of our BOW table is as follows:
 |  3 |            0 |           0 |           0 |      0 |       1 |        0 |       0 |           0 |           0 |           0 |
 |  4 |            0 |           1 |           0 |      1 |       0 |        0 |       0 |           1 |           0 |           0 |
 
-</center>
+</div>
 
 ### Dimensionality Reduction
 
