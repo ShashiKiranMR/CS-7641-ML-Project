@@ -380,7 +380,7 @@ The following is the sample clustering of 10 papers from our testing dataset:
 |    8 | The Parameterized Complexity of Global Constraints           |          1 |
 |    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          1 |
 
-### Analysis of the results
+### Analysis and Discussion on the Clustering Results
 
 We have experimented K-means clustering to group similar papers  together using 3 different encodings, namely BOW, TF-IDF, and BERT. We  have also tried to reduce the dimensions using SVD. 
 
