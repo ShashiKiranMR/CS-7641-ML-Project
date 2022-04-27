@@ -1,4 +1,4 @@
-# Paper Acceptance Prediction
+# PAPer: Paper Acceptance Prediction 
 
 ## Team 10 Group Members
 - Andrew Chafos
@@ -615,15 +615,13 @@ Here were the overall test accuracies for each of the text-based supervised lear
 
 Of all the supervised learning methods ran for text-based acceptance prediction, Naive Bayes performed the worst, and Random Forest performed the best for 200 estimators and a max. depth of 9. This suggests that, for the numerical features we selected from the papers, naive probabilistic relationships between the features yield little information, whereas splitting the data in a tree-like fashion, pruning, and averaging over many cases yields the optimal way of partitioning paper features for acceptance prediction.
 
+We do not compare our text-based approaches with our image-based approaches because they use different datasets. We can only crawl a small portion of the raw PDF for image-based models for our datasets. It would be unfair for the text-based models to be trained on a much smaller subset.
+
 ## Future Work
 
-Further fine-tuning our models may give even better prediction performance.
+Further fine-tuning our models may give even better prediction performance. With regard to text-based approaches, we only explored varying the initial learning rate and the initial hidden layer size within 2 specific ranges for the neural network. Hence, it is reasonable to expect there may be better hyperparameters for the neural network, perhaps with more hidden layers, that were outside the scope of our computations. There may be similar optimizations to be made for other used supervised methods. Additionally, there were several features we had to cut for the sake of time, including single-feature representations of BoW and TFIDF for the abstract, that could have yielded additional insights. It would also be worthwhile to explore different supervised learning methods that were not considered in this project.
 
-With regard to text-based approaches, we only explored varying the initial learning rate and the initial hidden layer size within 2 specific ranges for the neural network. Hence, it is reasonable to expect there may be better hyperparameters for the neural network, perhaps with more hidden layers, that were outside the scope of our computations. There may be similar optimizations to be made for other used supervised methods. Additionally, there were several features we had to cut for the sake of time, including single-feature representations of BoW and TFIDF for the abstract, that could have yielded additional insights. It would also be worthwhile to explore different supervised learning methods that were not considered in this project.
-
-Additionally, running the supervised models on a combination of text-based and image-based features may yield better results for paper acceptance prediction.
-
-It remains interesting to see how an ensemble of domain-specific models could improve the predictive capability of our approach.
+Additionally, running the supervised models on a combination of text-based and image-based features may yield better results for paper acceptance prediction. It remains interesting to see how an ensemble of domain-specific models could improve the predictive capability of our approach.
 
 ## Work Division
 We planned individual members’ responsibility as follows. Additionally, we assigned weekly tasks to all the members and synced up weekly to ensure all of us were progressing.
@@ -646,4 +644,17 @@ North American Chapter of the Association for Computational Linguistics 2018.
 [4] Qingyun Wang, Qi Zeng, Lifu Huang, Kevin Knight, Heng Ji, Nazneen Fatema Rajani. _ReviewRobot: Explainable Paper Review Generation based on Knowledge Synthesis_. International Conference on Natural Language Generation 2020. [https://arxiv.org/abs/2010.06119](https://arxiv.org/abs/2010.06119)
 
 [5] Jia-Bin Huang. _Deep Paper Gestalt_. Computer Vision and Pattern Recognition 2018. [https://arxiv.org/pdf/1812.08775.pdf](https://arxiv.org/pdf/1812.08775.pdf)
+
+[6] D. Bau, B. Zhou, A. Khosla, A. Oliva, and A. Torralba. _Network dissection: Quantifying interpretability of deep visual representations_. In CVPR, 2017 [https://arxiv.org/abs/1704.05796](https://arxiv.org/abs/1704.05796)
+
+[7] R. Girshick, J. Donahue, T. Darrell, and J. Malik. _Rich fea-ture hierarchies for accurate object detection and semantic segmentation_. In CVPR, 2014 [https://arxiv.org/abs/1311.2524](https://arxiv.org/abs/1311.2524)
+
+[8] W. Jen S. Zhang M. Chen. _Predicting Conference Paper Acceptance_ [https://cs229.stanford.edu/proj2018/report/117.pdf](https://cs229.stanford.edu/proj2018/report/117.pdf)
+
+[9] M. Skorikov, S. Moment. _Machine learning approach to predicting the acceptance of academic papers_ [https://ieeexplore.ieee.org/document/9172011](https://ieeexplore.ieee.org/document/9172011)
+
+[10] A. S. Lan, D. Vats, A. E. Waters, and R. G. Baraniuk. _Mathematical language processing: Automatic grading and feed-back for open response mathematical questions_. In Proceed-ings of the Second ACM Conference on Learning@ Scale,2015. [https://arxiv.org/abs/1501.04346](https://arxiv.org/abs/1501.04346)
+
+[11] L. S. Larkey. _Automatic essay grading using text categorization techniques_. In International ACM SIGIR conference on Research and development in information retrieval, 1998 [https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.42.8449&rep=rep1&type=pdf](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.42.8449&rep=rep1&type=pdf)
+
 
