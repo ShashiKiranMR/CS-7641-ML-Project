@@ -7,27 +7,14 @@
 - Ka Lok Ng
 
 ## Introduction
-<!--
 The number of paper submissions in ML conferences is on the rise and outpacing the availability of good reviewers to evaluate them. Having a reliable way to quantify a paper's quality in terms of probability of acceptance could allow one to better allocate the papers among reviewers while also having a better metric for desk rejection of poor-quality papers. Additionally, such a model could also be used to aid authors to instantly evaluate and subsequently improve their paper’s chances of acceptance. Self-evaluation could also discourage authors from submitting poor-quality papers, hence leading to better quality paper submissions overall. Hence, such a model could have double benefits in terms of supporting the scientific community.
 
 Besides the hard-to-measure aspects such as the novelty and the quality of research, many other measurable factors play a vital role in the paper review process. Good presentation is necessary for reviewers to appreciate the papers. The popularity of the paper's research sub-domain may also affect its acceptance.
--->
 
-The number of paper submissions in ML conferences has outpaced the capacity of reviewers.
-Since there is no reliable metric to quantify the possibility of acceptance of a paper in advance,
-many papers often get rejected due to a hasty submission with low quality
-or interest mismatch to reviewers or a target conference.
-We propose a machine learning project that enables authors to self-evaluate
-the quality of their papers in acceptance probability
+The number of paper submissions in ML conferences has outpaced the capacity of reviewers. Since there is no reliable metric to quantify the possibility of acceptance of a paper in advance, many papers often get rejected due to a hasty submission with low quality or interest mismatch to reviewers or a target conference. We propose a machine learning project that enables authors to self-evaluate the quality of their papers in acceptance probability
 based on prior submissions to some top-tier ML conferences and their corresponding reviews.
 
-Reviewers evaluate diverse aspects of a paper.
-Not to mention its novelty and writing quality,
-they also account for visual representations of the submitted paper.
-Besides, accepted papers usually reflect the contemporary research trend in the domain.
-Unlike similar works,
-we additionally reflect these features in our estimating model that gauges
-the acceptance possibility of the paper.
+Reviewers evaluate diverse aspects of a paper. Not to mention its novelty and writing quality,they also account for visual representations of the submitted paper. Besides, accepted papers usually reflect the contemporary research trend in the domain. Unlike similar works, we additionally reflect these features in our estimating model that gauges the acceptance possibility of the paper.
 
 Previously, Joshi et al. [2] and J. Huang et al. [5] developed supervised learning models to predict paper acceptance. Dong et al. [3] attempted predicting a paper's the h-index. Wang et al. [4] built models for generating review comments and scores for papers. 
 
@@ -65,16 +52,21 @@ We are using unsupervised learning methods to discover the sub-domain of a paper
 Our main idea is to capture the wordings in papers as features, most likely using natural language processing (NLP) techniques to transform the paper contents into (word embedding) vectors. Furthermore, we will combine them with some "meta-data" of the papers, e.g., the citations, the number of figures/equations, etc.
 
 ### Unsupervised Learning
-**Unsupervised learning** techniques would help us discover similar sub-domains and recent popular research trends by performing clustering based on inclusion of keywords related to specific sub-domains. Clustering techniques include:
-1. k-means clustering
-2. Gaussian mixture model clustering
-3. Density-based clustering
+**Unsupervised learning** techniques would help us discover similar sub-domains and recent popular research trends by performing clustering based on inclusion of keywords related to specific sub-domains. We use k-means clustering techniques to identify sub-domains by using various feature representations as follows
 
-We have implemented Bag-of-words and TF-IDF encoding using words from ‘Title’, and ‘Abstract’ sections of the paper. We are using scikit’s feature_extraction libraries to construct our encodings. 
+1. Bag-of-words (BOW)
+2. Term Frequency–Inverse Document Frequency (TF-IDF)
+3. Bidirectional Encoder Representations from Transformers (BERT)
+
+We have implemented Bag-of-words, TF-IDF and BERT encoding using words from ‘Title’, and ‘Abstract’ sections of the paper. We are using scikit’s feature_extraction libraries to construct our BOW and TF-IDF encodings. 
 
 ### Bag-of-words (BOW)
 
-We chose this model because it is the simplest numerical representation of text. For constructing this, we are using scikit’s CountVectorizer to tokenize the sentences from ‘Title’ and ‘Abstract’ into a matrix of token counts. Then we are using scikit’s fit_transform() api to learn the vocabulary dictionary and return the document-term matrix. We are using pandas dataframes to store this matrix.
+We chose this model because it is the simplest numerical  representation of text. For constructing this, we are using scikit’s  CountVectorizer to tokenize the sentences from ‘Title’ and ‘Abstract’  into a matrix of token counts. Then we are using scikit’s  fit_transform() api to learn the vocabulary dictionary and return the  document-term matrix. We are using pandas dataframes to store this  matrix.
+
+During preprocessing the data, we are excluding English stop words  and numbers from tokenizing because they do not contribute for analyzing the sub-domain.
+
+There are total 11727 papers, including both training and testing data, and the encoding resulted in 29445 unique words. A sample of our BOW table is as follows:
 
 ```py
 # Getting bag of words data structure
@@ -84,34 +76,115 @@ cv_dataframe=pd.DataFrame(Count_data.toarray(),columns=CountVec.get_feature_name
 pd.set_option('display.max_colwidth', None)
 pd.set_option('display.max_rows', None)
 display(cv_dataframe.head(5).loc[:,cv_dataframe.head(5).any()])
+
+# Dimension reduction on BOW using SVD
+svd = TruncatedSVD(n_components=500, n_iter=10, random_state=42)
+svd.fit(Count_data)
+X_new = svd.transform(Count_data)
+X_train = X_new[0:len(train_data)]
+X_test = X_new[len(train_data):]
 ```
 
 As we can see, there are total 11727 papers, including both training and testing data, and the encoding resulted in 29445 unique words. 
 
 A sample of our BOW table is as follows:
 
-| | 2014 | abstraction | accuracy | achieve | achieves | addition | additionally | alignment | ambiguity | amounts |
-|---:|-------:|--------------:|-----------:|----------:|-----------:|-----------:|---------------:|------------:|------------:|----------:|
-| 0 | 0 | 0 | 0 | 1 | 0 | 1 | 0 | 0 | 2 | 0 |
-| 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 |
-| 2 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 |
-| 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| 4 | 0 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 0 | 0 |
+|      | annotation | answering | attention | base | based | bridge | cross | detection | effective | embedding |
+| ---: | ---------: | --------: | --------: | ---: | ----: | -----: | ----: | --------: | --------: | --------: |
+|    0 |          0 |         0 |         0 |    0 |     0 |      1 |     0 |         0 |         0 |         1 |
+|    1 |          0 |         0 |         1 |    0 |     0 |      0 |     0 |         0 |         0 |         0 |
+|    2 |          1 |         0 |         0 |    0 |     0 |      0 |     1 |         0 |         1 |         0 |
+|    3 |          0 |         0 |         0 |    0 |     1 |      0 |     0 |         0 |         0 |         0 |
+|    4 |          0 |         1 |         0 |    1 |     0 |      0 |     0 |         1 |         0 |         0 |
 
+### Dimensionality Reduction
 
-### TFIDF
+Initially we clustered similar papers together by considering both  Title and Abstract sections of the papers for encoding and clustering.  The total number of unique words resulted in 29445 which is the number  of features in this case. As you can already tell, this is a lot of  features and we have to reduce them better and faster clustering.
 
-This model is a numeric statistic that is intended to reflect how important a word is to a document. Term frequency is a measure of how frequently a term appears in a document and IDF is a measure of how important a term is. In contrast to BOW, this model derives information on the most and least important words, and hence is expected to perform better. Implementing this is like the BOW approach, except that we will be using a different tokenizer for our data. We are using scikit’s TfidfVectorizer with English stop-words to avoid commonly used English words. 
+We have tried out the following ways to overcome this problem and  will be continuing with these approach for all clustering/encoding  methods: 
+
+#### Just use Title of the paper for clustering
+
+By doing this our features drastically reduced to 9172 unique words  which is very reasonable for clustering. In this case we don't even have to explicitly use dimension reduction techniques because this is  computationally reasonable and also lesser than the number of samples we have.
+
+#### Singular Value Decomposition (SVD)
+
+Alternatively, we also experimented using SVD for dimension reduction. In this case as well, we considered words from the Title of  the papers because after exploring with and without Abstract we could  see that Title alone is reasonably sufficient for clustering similar  papers together. One big advantage of excluding Abstract now is that we  can further reduce the number of features much lesser than 9172 unique  words we have from the Title.
+
+### Clustering on BOW model
+
+Now, we will be using the BOW encoding for clustering similar  sub-domain papers together. For this we are using K-means clustering  algorithm and we are determining the optimal number of clusters using  the popular elbow curve method.
+
+#### Without SVD
+
+From the below elbow curve, we are choosing *𝐾*=6 as the optimal number of clusters for our final clustering model.
+
+![Elbow method](./elbow_bow.png)
+
+Inertia which is sum of squared distances of samples to their closest cluster center is also obtained once the training is done. Inertia in this case is 71404.58780199478.
+
+#### With SVD
+
+From the below elbow curve, we are choosing *𝐾*=6 as the optimal number of clusters for our final clustering model.
+
+![Elbow method](./elbow_bow_svd.png)
+
+Inertia in this case is 44204.41325844073.
+
+### Clustering Analysis
+#### Without SVD
+To understand what each cluster signifies in terms of sub-domain, we are obtaining top terms per cluster. To analyze in a better way, word clouds for these are generated.
+<center><img src="./wordcloud_bow_cluster0.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_bow_cluster1.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_bow_cluster2.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_bow_cluster3.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_bow_cluster4.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_bow_cluster5.png" alt="wordcloud"/></center>
+
+Once the model is trained, we are clustering the papers in our testing set and the sample prediction is as shown below.
+
+|      | Title                                                        | Cluster ID |
+| ---: | :----------------------------------------------------------- | ---------: |
+|    0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability |          1 |
+|    1 | A Neural Local Coherence Model                               |          2 |
+|    2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis |          2 |
+|    3 | Neural Disambiguation of Causal Lexical Markers based on Context |          2 |
+|    4 | Chunk-based Decoder for Neural Machine Translation           |          3 |
+|    5 | What do Neural Machine Translation Models Learn about Morphology? |          3 |
+|    6 | Detecting Lexical Entailment in Context                      |          1 |
+|    7 | Support Vector Machine Classification with Indefinite Kernels |          1 |
+|    8 | The Parameterized Complexity of Global Constraints           |          1 |
+|    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          1 |
+
+#### With SVD
+Now, clustering on BOW by reducing the number of features to 500 using SVD, the following is the sample prediction:
+
+|      | Title                                                        | Cluster ID |
+| ---: | :----------------------------------------------------------- | ---------: |
+|    0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability |          1 |
+|    1 | A Neural Local Coherence Model                               |          3 |
+|    2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis |          3 |
+|    3 | Neural Disambiguation of Causal Lexical Markers based on Context |          2 |
+|    4 | Chunk-based Decoder for Neural Machine Translation           |          2 |
+|    5 | What do Neural Machine Translation Models Learn about Morphology? |          3 |
+|    6 | Detecting Lexical Entailment in Context                      |          1 |
+|    7 | Support Vector Machine Classification with Indefinite Kernels |          1 |
+|    8 | The Parameterized Complexity of Global Constraints           |          1 |
+|    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          1 |
+
+### TF-IDF Encoding
+
+This model is a numeric statistic that is intended to reflect how  important a word is to a document. Term frequency is a measure of how  frequently a term appears in a document and IDF is a measure of how  important a term is. In contrast to BOW, this model derives information  on the most and least important words, and hence is expected to perform  better. Implementing this is like the BOW approach, except that we will  be using a different tokenizer for our data. We are using scikit’s  TfidfVectorizer with English stop-words to avoid commonly used English  words.
 
 A sample of our TF_IDF encoding is as follows:
 
-| | 2014 | abstraction | accuracy | achieve | achieves | addition | additionally | alignment | ambiguity | amounts |
-|---:|---------:|--------------:|-----------:|----------:|-----------:|-----------:|---------------:|------------:|------------:|----------:|
-| 0 | 0 | 0 | 0 | 0.0518454 | 0 | 0.0569909 | 0 | 0 | 0.169309 | 0 |
-| 1 | 0.107777 | 0 | 0 | 0 | 0 | 0 | 0 | 0.10049 | 0 | 0 |
-| 2 | 0 | 0 | 0.0418489 | 0.047715 | 0 | 0 | 0 | 0 | 0 | 0.0690737 |
-| 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| 4 | 0 | 0.0910088 | 0.0526805 | 0.0600649 | 0.0640578 | 0 | 0.0832706 | 0 | 0 | 0 |
+|      | annotation | answering | attention |     base |    based |   bridge |    cross | detection | effective | embedding |
+| ---: | ---------: | --------: | --------: | -------: | -------: | -------: | -------: | --------: | --------: | --------: |
+|    0 |          0 |         0 |         0 |        0 |        0 | 0.467153 |        0 |         0 |         0 |  0.299487 |
+|    1 |          0 |         0 |  0.318779 |        0 |        0 |        0 |        0 |         0 |         0 |         0 |
+|    2 |   0.330864 |         0 |         0 |        0 |        0 |        0 | 0.286734 |         0 |  0.330864 |         0 |
+|    3 |          0 |         0 |         0 |        0 | 0.215444 |        0 |        0 |         0 |         0 |         0 |
+|    4 |          0 |   0.36217 |         0 | 0.429501 |        0 |        0 |        0 |  0.306265 |         0 |         0 |
 
 To cluster papers belonging to similar sub-domains together, we have implemented K-Means algorithm on TF-TDF encoding. 
 
@@ -127,7 +200,65 @@ tf_idf_df=pd.DataFrame(X_train.toarray(),columns=vectorizer.get_feature_names_ou
 display(tf_idf_df.head(5).loc[:,tf_idf_df.head(5).any()])
 ```
 
+### Clustering on TF-IDF model
+
+Now, we will be using the TF-IDF encoding for clustering similar sub-domain papers together. For this we are using K-means clustering algorithm and we are determining the optimal number of clusters using the popular elbow curve method.
+
+#### Without SVD
+From the below elbow curve, we are choosing K=6 as the optimal number of clusters for our final clustering model.
+<center><img src="./elbow_tfidf.png" alt="Elbow method"/></center>
+
+Inertia which is sum of squared distances of samples to their closest cluster center is also obtained once the training is done. Inertia in this case is 10789.440479184834.
+
+#### With SVD
+From the below elbow curve, we are choosing K=6 as the optimal number of clusters for our final clustering model.
+<center><img src="./elbow_tfidf_svd.png" alt="Elbow method"/></center>
+
+Inertia in this case is 5179.698138369373.
+
+### Clustering Analysis
+#### Without SVD
+To understand what each cluster signifies in terms of sub-domain, we are obtaining top terms per cluster. To analyze in a better way, word clouds for these are generated.
+<center><img src="./wordcloud_tfidf_cluster0.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_tfidf_cluster1.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_tfidf_cluster2.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_tfidf_cluster3.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_tfidf_cluster4.png" alt="wordcloud"/></center>
+<center><img src="./wordcloud_tfidf_cluster5.png" alt="wordcloud"/></center>
+
+Once the model is trained, we are clustering the papers in our testing set and the sample prediction is as shown below.
+
+|      | Title                                                        | Cluster ID |
+| ---: | :----------------------------------------------------------- | ---------: |
+|    0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability |          3 |
+|    1 | A Neural Local Coherence Model                               |          2 |
+|    2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis |          0 |
+|    3 | Neural Disambiguation of Causal Lexical Markers based on Context |          4 |
+|    4 | Chunk-based Decoder for Neural Machine Translation           |          3 |
+|    5 | What do Neural Machine Translation Models Learn about Morphology? |          3 |
+|    6 | Detecting Lexical Entailment in Context                      |          0 |
+|    7 | Support Vector Machine Classification with Indefinite Kernels |          3 |
+|    8 | The Parameterized Complexity of Global Constraints           |          0 |
+|    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          0 |
+
+#### With SVD
+Now, clustering on TF-IDF by reducing the number of features to 500 using SVD, the following is the sample prediction:
+
+|      | Title                                                        | Cluster ID |
+| ---: | :----------------------------------------------------------- | ---------: |
+|    0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability |          0 |
+|    1 | A Neural Local Coherence Model                               |          4 |
+|    2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis |          3 |
+|    3 | Neural Disambiguation of Causal Lexical Markers based on Context |          1 |
+|    4 | Chunk-based Decoder for Neural Machine Translation           |          0 |
+|    5 | What do Neural Machine Translation Models Learn about Morphology? |          0 |
+|    6 | Detecting Lexical Entailment in Context                      |          1 |
+|    7 | Support Vector Machine Classification with Indefinite Kernels |          0 |
+|    8 | The Parameterized Complexity of Global Constraints           |          1 |
+|    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          1 |
+
 ### K-Means Clustering
+
 To decide the optimal number of clusters, we have used the elbow method.
 
 ```py
@@ -181,9 +312,72 @@ A sample output of our clustering algorithm is as follows:
 | 8 | The Parameterized Complexity of Global Constraints | 4 |
 | 9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game | 0 |
 
+### BERT Encoding
+#### Without SVD
+BERT stands for Bidirectional Encoder Representations from Transformers. BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial task-specific architecture modifications.
+
+We are using sentence-transformers package which wraps the Huggingface Transformers library. For sentence, we are using a pre-trained model 'distilbert-base-nli-stsb-mean-tokens'.
+
+We are then using this transformation for K-means clustering to group similar papers together, and as before we use elbow method to find the optimal number of clusters needed which happens to be 6 in this case.
+
+<center><img src="./elbow_bert.png" alt="Elbow method"/></center>
+
+The number of features after BERT encoding happens to be 768, and the total inertia for clustering is 1512914.25. <br>
+The following is the sample clustering of 10 papers from our testing dataset:
+
+|      | Title                                                        | Cluster ID |
+| ---: | :----------------------------------------------------------- | ---------: |
+|    0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability |          5 |
+|    1 | A Neural Local Coherence Model                               |          0 |
+|    2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis |          2 |
+|    3 | Neural Disambiguation of Causal Lexical Markers based on Context |          0 |
+|    4 | Chunk-based Decoder for Neural Machine Translation           |          0 |
+|    5 | What do Neural Machine Translation Models Learn about Morphology? |          0 |
+|    6 | Detecting Lexical Entailment in Context                      |          5 |
+|    7 | Support Vector Machine Classification with Indefinite Kernels |          5 |
+|    8 | The Parameterized Complexity of Global Constraints           |          5 |
+|    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          5 |
+
+#### With SVD
+As the number of features are already low, there is no need for dimension reduction. However for consistency we are reducing the dimensions to 500 using SVD.
+<center><img src="./elbow_bert_svd.png" alt="Elbow method"/></center>
+
+The total inertia for clustering is 1490288.75. <br>
+The following is the sample clustering of 10 papers from our testing dataset:
+
+|      | Title                                                        | Cluster ID |
+| ---: | :----------------------------------------------------------- | ---------: |
+|    0 | Evaluation Metrics for Machine Reading Comprehension: Prerequisite Skills and Readability |          0 |
+|    1 | A Neural Local Coherence Model                               |          4 |
+|    2 | Neural Modeling of Multi-Predicate Interactions for Japanese Predicate Argument Structure Analysis |          3 |
+|    3 | Neural Disambiguation of Causal Lexical Markers based on Context |          1 |
+|    4 | Chunk-based Decoder for Neural Machine Translation           |          0 |
+|    5 | What do Neural Machine Translation Models Learn about Morphology? |          0 |
+|    6 | Detecting Lexical Entailment in Context                      |          1 |
+|    7 | Support Vector Machine Classification with Indefinite Kernels |          0 |
+|    8 | The Parameterized Complexity of Global Constraints           |          1 |
+|    9 | Examples as Interaction: On Humans Teaching a Computer to Play a Game |          1 |
+
 ### Analysis of the results
 
 From the table above, it is difficult to identify the sub-domain for a cluster. One potential reason we suspect is that we are using all the possible unique words for predicting the sub-domain. As shown before, there are a total of 29,445 unique words from the title and abstract of 11,727 papers, and the resulting encoding is a sparse matrix. There are a few enhancements we plan to make for the final report to fix these issues. We will be reducing the number of features (unique words in this case) using dimensionality reduction algorithms like PCA. Another notable observation is that the top words in each cluster are commonly used words in Machine Learning, so we cannot rely on these words to correctly differentiate the sub-domains. Hence, along with English stop words, which we eliminated from our encodings, we will also try to eliminate commonly used words in Machine Learning for clustering so that the clustering/sub-domain prediction gets better. We will also be implementing the BERT transformer for clustering, and we hope to see better sub-domain prediction compared to BOW and TF-IDF.
+
+#### Clustering Comparison:
+
+We have experimented K-means clustering to group similar papers  together using 3 different encodings, namely BOW, TF-IDF, and BERT. We  have also tried to reduce the dimensions using SVD. Conceptually the  encodings these models do for transforming strings to numbers is  completely different and hence we cannot definitely compare these as we  do not have the ground truth in this case.
+
+Numerically, inertia can be used to compare the distances but we  cannot really say which clustering is better just based on the following numbers.
+
+| Encoding | # features before SVD | # features after SVD | Inertia without SVD | Inertia after SVD |
+| -------- | --------------------- | -------------------- | ------------------- | ----------------- |
+| BOW      | 9172                  | 500                  | 71404               | 44204             |
+| TF-IDF   | 9172                  | 500                  | 10789               | 5179              |
+| BERT     | 768                   | 500                  | 1512914             | 1490288           |
+
+But there are few observations we made: 
+
+1. BOW and TF-IDF encodings result in very high dimensions compared  to BERT, hence BOW and TF-IDF models result in sparse matrix whereas BERT does not have this issue.
+2. Ideally we expect BERT clustering to be better because BERT is  context-dependent encoding, but due to the lack of ground truth on sub-domains we do not have a definitive way to prove it.
 
 ### Supervised Learning
 **Supervised learning** techniques help test our hypothesis about the factors and paper acceptance. Hopefully, we may discover some hidden factors that affect paper acceptance.
@@ -249,6 +443,8 @@ Support Vector Machine (SVM) are a class of supervised classification algorithms
 
 
 ##### 7. Neural-network (Multi-Layer Perceptron)
+
+Multi-layer Perceptron (MLP) is a supervised learning algorithm that learns a function by training on a dataset, it can be used to train and classification model. Given a set of features and a target classes (here only two) , it can learn a non-linear function approximator. It is different from logistic regression, as there can be one or more non-linear layers usually referred to as hidden layers. We explore several variations of the hyper-parameters available to find the best one.
 
 
 
