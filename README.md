@@ -605,6 +605,18 @@ Additionally, the test accuracy for running the neural network on a variety of i
 <!-- #### Supervised Approaches Conclusion -->
 #### Conclusion and Discussion on our Text-based Supervised Learning Approaches
 
+Here were the overall test accuracies for each of the text-based supervised learning methods:
+
+| Supervised Learning Method | Best Test Accuracy |
+|-------------------------|--------------------|
+| Naive Bayes             | 51.96 %            |
+| K-Nearest Neighbor (KNN)| 65.03%             |
+| Logistic Regression     | 64.54%             |
+| Decision Tree           | 62.66%             |
+| Random Forest           | 70.42%             |
+| SVM                     | 68.55%             |
+| MLP                     | 69.11%             |
+
 Of all the supervised learning methods ran for text-based acceptance prediction, Naive Bayes performed the worst, and Random Forest performed the best for 200 estimators and a max. depth of 9. This suggests that, for the numerical features we selected from the papers, naive probabilistic relationships between the features yield little information, whereas splitting the data in a tree-like fashion, pruning, and averaging over many cases yields the optimal way of partitioning paper features for acceptance prediction.
 
 ## Future Work
