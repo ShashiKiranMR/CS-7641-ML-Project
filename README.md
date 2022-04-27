@@ -88,8 +88,6 @@ X_test = X_new[len(train_data):]
 As we can see, there are total 11727 papers, including both training and testing data, and the encoding resulted in 29445 unique words. 
 
 A sample of our BOW table is as follows:
-
-<div align="center">
     
 |    |   annotation |   answering |   attention |   base |   based |   bridge |   cross |   detection |   effective |   embedding |
 |---:|-------------:|------------:|------------:|-------:|--------:|---------:|--------:|------------:|------------:|------------:|
@@ -99,7 +97,6 @@ A sample of our BOW table is as follows:
 |  3 |            0 |           0 |           0 |      0 |       1 |        0 |       0 |           0 |           0 |           0 |
 |  4 |            0 |           1 |           0 |      1 |       0 |        0 |       0 |           1 |           0 |           0 |
 
-</div>
 
 ### Dimensionality Reduction
 
