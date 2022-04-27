@@ -461,55 +461,101 @@ We will be using the labelled dataset to train supervised algorithms to predict 
 6.	Support Vector Machine
 7.	Neural-network (Multi-Layer Perceptron)
 
-We will implement these algorithms and try to improve accuracy and analyze the relation between sub-domains and the classification algorithm that performs best for each one.
+We have implemented each of these algorithms, fine-tuned their parameters to improve accuracy, and analyzed the relation between sub-domains and the classification algorithm that performs best for each one.
+
+For each of these algorithms, we noticed that using the data available from the PeerRead database directly did not yield useful results because most of the papers were rejected; hence, the models were rewarded with high test accuracy if they simply guessed "reject". We compensated for this by combining all the prior training and testing data, and randomly sampling data corresponding to both rejected and accepted papers such that approximately 55% were rejected and 45% were accepted. The entire dataset from which paper data was sampled for text-based classification consisted of the 3 Arxiv datasets.
 
 ##### 1. Naive Bayes
 
 Naive Bayes is a simple method for constructing classifiers i.e. assign class labels to problem instances, represented as feature vectors such as BOW, TF-IDF, BERT etc. Naive Bayes classifiers rely on the assumption that a particular feature is independent of all other features. Despite this naive design and simple approach, naive Bayes approach works quite well in most cases. An advantage of naive Bayes is that it requires only a small number of training data to estimate the parameters for classification, which is a especially useful in data-constrained settings. The probabilistic nature of the method makes it suitable for our use case.
 
+Naive Bayes performed the worst, by far, of all the algorithms, implying that naive probabilistic relationships were not sufficient to model the relationship between the features we used and paper acceptance. The test accuracy was a staggeringly low 51.96%.
 
+The accuracies, false vs. true positive graph, and confusion matrix for running Naive Bayes on our data are shown below.
+
+<center><img src="naive_bayes_graphs.png" alt="Naive Bayes Graphs"/></center>
 
 ##### 2. K-Nearest Neighbor (KNN)
 
 The K-Nearest Neighbor (KNN) algorithm is a type of supervised learning algorithm used for both regression and classification tasks. KNN tries to predict the  correct class for the test data by calculating the distance between the  test data and all the training points in feature space. It essentially relies on the assumption that similar things exist in close proximity to each other. Hence feature selection becomes crucial for good performance. 
 
+KNN performed modestly, with its best test accuracy being 65.03% when ran with 41 neighbors.
 
+The accuracies, false vs. true positive graph, and confusion matrix for running KNN on our data are shown below.
+
+<center><img src="knn_graph.png" alt="KNN Graphs"/></center>
+
+Additionally, the test accuracy for each of the number of neighbors for which we ran KNN is plotted below.
+
+<center><img src="knn_hyperparam_graph.png" alt="KNN Hyperparameter Graphs"/></center>
 
 ##### 3. Logistic Regression
 
 Binary Logistic regression is a supervised classification method used to predict the probability of a target variable. The nature of output is dichotomous, i.e. there would be two possible classes. In other words, the output is binarized i.e outputting either 1 or 0 only. Mathematically, a logistic regression model predicts P(Y=1) as a  function of X. It is one of the simplest ML algorithms that can be used  for various classification problems.
 
+Logistic Regression performed modestly, with a test accuracy of 64.54%.
 
+The accuracies, false vs. true positive graph, and confusion matrix for running Logistic Regression on our data are shown below.
+
+<center><img src="logistic_graph.png" alt="Logistic Regression Graphs"/></center>
 
 ##### 4. Decision Tree
 
 Decision Trees can be thought of as non-parametric supervised classification method. It aims to create a model that predicts an output by learning simple decision rules constructed from the data features. It is called a tree as these decision rules can be structurally be represented as a tree.
 
+Using 1 Decission Tree with an unbounded depth performed modestly, with a test accuracy of 62.66%. As you can see from the training accuracy, there was total overfitting to the training data, suggesting that pruning would improve the test accuracy. This was done in the next method, random forest.
 
+The accuracies, false vs. true positive graph, and confusion matrix for running one unruned Decision Tree on our data are shown below.
+
+<center><img src="decision_tree_graph.png" alt="Decision Tree Graph"/></center>
 
 ##### 5. Random Forest
 
 The Random forest is a classification algorithm consisting of many randomly constructed decisions trees. It uses bagging and feature randomness when building each individual tree to create an uncorrelated forest (ensemble) of trees whose prediction by committee is more accurate than that of any individual tree. It is effective in many scenarios and can be used for various classification problems.
 
+Random Forest performed the best out of all supervised methods for text-based classification. We suspect this is because our features consisted of several metrics for which the relationship was not immediately clear via other means, so splitting along them as random forests do among many decision trees yielded the best way to partition our data according to acceptance.
+
+The best test acceptance for random forest, and indeed of all the text-based models, was 70.42%, which was acheived by running Random Forest with 200 estimators and a maximum depth of 9.
+
+The best accuracies, false vs. true positive graph, and confusion matrix for running Random Forest on our data are shown below.
+
+<center><img src="random_forest_graph.png" alt="Random Forest Graph"/></center>
+
+Additionally, the test accuracy for each of the maximum depths for which we ran Random Forest is plotted below.
+
+<center><img src="random_forest_hyperparam_graph.png" alt="Random Forest Hyperparameter Graph"/></center>
 
 
 ##### 6. Support Vector Machine (SVM)
 
 Support Vector Machine (SVM) are a class of supervised classification algorithms. In the SVM algorithm, we plot each data item as a point in n-dimensional feature space with the value of each feature being the value of a particular coordinate. The learning component aims to perform classification by finding the hyper-plane that differentiates the two classes in the best possible way.
 
+SVM performed very well, almost as well as the top supervised learning method, with a test acceptance of 68.55%.
+
+The accuracies, false vs. true positive graph, and confusion matrix for running SVM on our data are shown below.
+
+<center><img src="svm_graph.png" alt="SVM Graph"/></center>
 
 
 ##### 7. Neural-network (Multi-Layer Perceptron)
 
 Multi-layer Perceptron (MLP) is a supervised learning algorithm that learns a function by training on a dataset, it can be used to train and classification model. Given a set of features and a target classes (here only two) , it can learn a non-linear function approximator. It is different from logistic regression, as there can be one or more non-linear layers usually referred to as hidden layers. We explore several variations of the hyper-parameters available to find the best one.
 
+The neural network performed very well, almost as well as the top supervised learning method, with a test acceptance of 69.11% for the one with the best parameters of an initial learning rate of 0.01 and an initial hidden layer size of 15.
+
+The best accuracies, false vs. true positive graph, and confusion matrix for running SVM on our data are shown below.
+
+<center><img src="neural_net_graph.png" alt="Neural Net Graph"/></center>
+
+Additionally, the test accuracy for running the neural network on a variety of initial learning rates with an initial hidden layer of size 5, and subsequently running it on a variety of initial hidden layer sizes using the best initial learning rate, is plotted below.
+
+<center><img src="neural_net_hyperparam_graph1.png" alt="Neural Net Hyperparameter Graph"/></center>
+<center><img src="neural_net_hyperparam_graph2.png" alt="Neural Net Hyperparameter Graph"/></center>
 
 
-#### Supervised approaches Conclusion
+#### Supervised Approaches Conclusion
 
-
-
-
+Of all the supervised learning methods ran for text-based acceptance prediction, Naive Bayes performed the worst, and Random Forest performed the best for 200 estimators and a max. depth of 9. This suggests that, for the numerical features we selected from the papers, naive probabilistic relationships between the features yield little information, whereas splitting the data in a tree-like fashion, pruning, and averaging over many cases yields the optimal way of partitioning paper features for acceptance prediction.
 
 ## Future Results and Discussion
 
