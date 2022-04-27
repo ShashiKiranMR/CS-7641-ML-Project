@@ -609,7 +609,8 @@ Of all the supervised learning methods ran for text-based acceptance prediction,
 
 ## Future Work
 
-Further fine-tuning our models may give even better prediction performance
+Further fine-tuning our models may give even better prediction performance.
+
 With regard to text-based approaches, we only explored varying the initial learning rate and the initial hidden layer size within 2 specific ranges for the neural network. Hence, it is reasonable to expect there may be better hyperparameters for the neural network, perhaps with more hidden layers, that were outside the scope of our computations. There may be similar optimizations to be made for other used supervised methods. Additionally, there were several features we had to cut for the sake of time, including single-feature representations of BoW and TFIDF for the abstract, that could have yielded additional insights. It would also be worthwhile to explore different supervised learning methods that were not considered in this project.
 
 Additionally, running the supervised models on a combination of text-based and image-based features may yield better results for paper acceptance prediction.
