@@ -352,7 +352,8 @@ But there are few observations we made:
 1. BOW and TF-IDF encodings result in very high dimensions compared  to BERT, hence BOW and TF-IDF models result in sparse matrix whereas BERT does not have this issue.
 2. Ideally we expect BERT clustering to be better because BERT is  context-dependent encoding, but due to the lack of ground truth on sub-domains we do not have a definitive way to prove it.
 
-#### K-means Clustering on Visual Embeddings from CNNs
+### Image-based Clustering
+<!-- #### K-means Clustering on Visual Embeddings from CNNs -->
 We also cluster the papers based on their visual appearance, aiming to discover features that might be useful for other ML models. Soon to be introduced below, ResNet is a CNN that captures visual features and transforms them into vectors for a linear classifier, i.e., the final fully connected layer, for prediction. We regard the vectors feeding to the linear classifier as the visual embeddings of the input papers, which has 512 dimensions and use these embeddings to run a K-means clustering.
 Below is the plot of the inertia of the K-mean clustering versus K, the number of clusters. By the elbow method, a good K is 7 as the inertia decreases relatively slowly since then. 
 
