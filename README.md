@@ -414,13 +414,15 @@ In addition to the sub-sampling, we also normalize the dataset to 0 mean and 1 s
 
 We twisted our loss function to combat the label-imbalance issue in our data because most papers presented on arXiv are likely to be rejected (by their indented conferences). To prevent the classifier from blindly skewing to one label, namely, rejection, we set weights of each label in our loss function equal to the inverse of their ratio in the training dataset.   
 
-The following chart presents the accuracy trajectory during the training, where the highest test accuracy is 76.4%. Although the model overfits after a few epochs, the model demonstrates non-trivial performance, better than the baseline indicated by the dotted lines on 68%, which is the ratio of the rejected papers to the total paper. It means that, if we skim the paper layout without diving into the content, we can make an educated guess on the paper acceptance.
+The following chart presents the accuracy trajectory during the training, where the highest test accuracy is 83.2%. Although the model overfits after a few epochs, the model demonstrates non-trivial performance, better than the baseline indicated by the dotted lines on 68%, which is the ratio of the rejected papers to the total paper. It means that, if we skim the paper layout without diving into the content, we can make an educated guess on the paper acceptance.
 
-<center><img src="accuracy_graph.png" alt="Accuracy Graph"/></center>
+<center><img src="resnet_acc.png" alt="Accuracy Graph"/></center>
 
 As the training accuracy is much higher than the test accuracy, our ResNet is overfitting. To mitigate overfitting, we added dropout layers and changed the frozen layers during the fine-tuning process. Yet, the test accuracy is at most different by a few percentage points.
-Still, the accuracy of ResNet-18 is not ideal. We suspect two possible reasons: 1) ResNet is not good enough CNN architecture for the acceptance prediction, or 2) the visual features are not enough for our tasks.
-To figure out the reasons, we also fine-tune a pre-trained VGG-11 with BatchNorm for our tasks. Yet, the resulting accuracy is similar. As shown below, the best attain accuracy is 73.6%, and the overfitting occurs. We are thus convinced that by just looking at the layout of the papers, the CNN classifiers can at best have decent but not impressive accuracy.
+
+The accuracy of ResNet-18 is decent, but it is still not perfect. We suspect two possible reasons: 1) ResNet is not good enough CNN architecture for the acceptance prediction, or 2) the visual features are not enough for our tasks.
+
+To figure out the reasons, we also fine-tune a pre-trained VGG-11 with BatchNorm for our tasks. Yet, the resulting accuracy is similar. As shown below, the best attain accuracy is 81.2%, and the overfitting occurs. We are thus convinced that by just looking at the layout of the papers, the CNN classifiers can at best have decent but not impressive accuracy. 
 
 <center><img src="vgg_acc.png" alt="Accuracy Graph"/></center>
 
@@ -434,9 +436,12 @@ VGG:
 
 ##### Where do the NNs look at? Activation Heatmap
 
-The CNNs can give us insight into what a good or bad paper looks like. We visualize the activation heatmap of our CNN to see where the NNs look when they predict the acceptance of a paper. In other words, we locate the areas in the input images that impact the most for the final CNN output. 
+The CNNs can give us insight into what a good or bad paper looks like. We visualize the activation heatmap of our CNN to see where the NNs look when they predict the acceptance of a paper. In other words, we locate the areas in the input images that most impact the final CNN output.
+
 To ensure we are not visualizing the heatmap where our CNNs make random guesses, we cherry-picked the test images with the least loss in our CNNs. It means our NNs can confidently give the correct prediction on them. 
+
 Following are the activation heatmaps of the “bad” papers that our ResNet correctly predicts with the least loss. The brighter the area is, the more influence it has to the prediction. Our ResNet pays the most attention to the figures inside the papers, and these images occupy a large proportion of the first few pages. Thus, a rule of thumb for writing a good paper is perhaps not to put too many large images in the first few pages.
+
 <center><img src="bad_heatmap_1.png" alt="Accuracy Graph"/></center>
 <center><img src="bad_org_1.png" alt="Accuracy Graph"/></center>
 <center><img src="bad_heatmap_2.png" alt="Accuracy Graph"/></center>
