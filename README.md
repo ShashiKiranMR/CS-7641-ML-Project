@@ -26,11 +26,11 @@ We gathered data for acceptance prediction from the PeerRead dataset [1] contain
 ### Text-based acceptance prediction
 Once the JSON data was loaded, we constructed a Pandas dataframe for each conference. Each row of each dataframe represents a paper from a particular conference, and each column corresponds to a feature whose value is calculated based on the metadata and review data. Below is an excerpt from one such dataframe, which corresponds to the database of arXiv Computer Science AI papers from 2007 to 2017. Each dataframe currently has 7 features (the 7 right-most columns), but we plan to add more. Additionally, we created a dataframe representing the labels for the papers of each conference: a boolean label whose value is True when the paper was accepted and False when it was not. We found that acceptance data was only immediately available for the 3 arXiv and ICLR datasets, meaning that these will be the focus of text-based acceptance prediction. When proceeding to text-based acceptance prediction, we will merge the testing and training dataframes and programmatically create our own testing and training divisions within the datasets.
 
-<img src="text_based_dataframe.png" alt="Timeline Picture"/>
+<center><img src="text_based_dataframe.png" alt="Timeline Picture"/></center>
 
 **<u>Feature Descriptions</u>**
 
-<img src="feature_descriptions.png" alt="Timeline Picture"/>
+<center><img src="feature_descriptions.png" alt="Timeline Picture"/></center>
 
 ### Image-based acceptance prediction 
 
@@ -462,10 +462,10 @@ We shall evaluate the model on the curated test sets to determine the model's ef
 ## Work Division
 We have planned individual members’ responsibility as follows. However, we are planning to make changes to it if needed as we are not exactly sure about the workload of sub-tasks. Additionally, we will be assigning weekly tasks to all the members and will be syncing up weekly to make sure all of us are progressing.
 
-<img src="work_division.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+<center><img src="work_division.png" alt="Timeline Picture"/></center>
 
 ## Timeline
-<img src="timeline.png" alt="Timeline Picture" style="float: left; margin-right: 10px;" />
+<center><img src="timeline.png" alt="Timeline Picture" /></center>
 
 ## References
 [1] Dongyeop Kang, Waleed Ammar, Bhavana Dalvi, Madeleine van Zuylen, Sebastian Kohlmeier, Eduard Hovy, Roy Schwartz.
