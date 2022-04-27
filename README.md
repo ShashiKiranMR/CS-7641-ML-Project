@@ -396,13 +396,12 @@ Below is the plot of the inertia of the K-mean clustering versus K, the number o
 
 <center><img src="visual_kmean_elbow.png" alt="Accuracy Graph"/></center>
 
+##### Results and Conclusion on Image-based Clustering
 
 Below are the top 5 papers images in each cluster closest to their centroids. We present the 5 clusters with the least loss (the sum of L2-distance to all data points in this cluster. Each row is for a cluster. The papers in each cluster appear to have a similar format, e.g., on the titles, author lists, and column margins. Thus, the clustering is likely differentiating the format of the papers, which is specified by the conferences. 
 
-
 <center><img src="visual_kmean_top.png" alt="Accuracy Graph"/></center>
 
-##### Conclusion on Image-based Clustering
 
 Although differentiating the paper's format may not be useful for acceptance prediction, it may be helpful for other related tasks. One is predicting the intended venue of a paper that appeared on an online pre-print or archive, e.g., arVix, to automate their upload pipeline and provide a better user experience. It may also help a paper search engine classify the paper's venue when not provided.
 
