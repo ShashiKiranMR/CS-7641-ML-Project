@@ -595,7 +595,8 @@ Additionally, the test accuracy for running the neural network on a variety of i
 <center><img src="neural_net_hyperparam_graph2.png" alt="Neural Net Hyperparameter Graph"/></center>
 
 
-#### Supervised Approaches Conclusion
+<!-- #### Supervised Approaches Conclusion -->
+#### Conclusion and Discussion on our Text-based Supervised Learning Approaches
 
 Of all the supervised learning methods ran for text-based acceptance prediction, Naive Bayes performed the worst, and Random Forest performed the best for 200 estimators and a max. depth of 9. This suggests that, for the numerical features we selected from the papers, naive probabilistic relationships between the features yield little information, whereas splitting the data in a tree-like fashion, pruning, and averaging over many cases yields the optimal way of partitioning paper features for acceptance prediction.
 
