@@ -619,6 +619,8 @@ Here were the overall test accuracies for each of the text-based supervised lear
 
 Of all the supervised learning methods ran for text-based acceptance prediction, Naive Bayes performed the worst, and Random Forest performed the best for 200 estimators and a max. depth of 9. This suggests that, for the numerical features we selected from the papers, naive probabilistic relationships between the features yield little information, whereas splitting the data in a tree-like fashion, pruning, and averaging over many cases yields the optimal way of partitioning paper features for acceptance prediction.
 
+We do not compare our text-based approaches with our image-based approaches because they use different datasets. We can only crawl a small portion of the raw PDF for image-based models for our datasets. It would be unfair for the text-based models to be trained on a much smaller subset.
+
 ## Future Work
 
 Further fine-tuning our models may give even better prediction performance.
